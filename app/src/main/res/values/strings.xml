@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">akazoo</string>
+    <string name="loading_tracks">Loading playlists tracks</string>
+    <string name="please_wait">Please wait...</string>
+    <string name="tracks_activity_title">Tracks</string>
+    <string name="playlists_activity_title">Playlists</string>
+    <string name="service_unavailable">Service is temporarily unavailable please try again later</string>
+    <string name="playlists_refresh_failed">Oops , playlists refresh failed !</string>
+    <string name="tracks_refresh_failed">Oops , we failed to retrieve the tracks for this playlist</string>
+    <string name="playlist_empty">Playlist is empty, are you blind ?</string>
+
+    <string name="transition_playlist_name">transition_playlist_name</string>
+</resources>

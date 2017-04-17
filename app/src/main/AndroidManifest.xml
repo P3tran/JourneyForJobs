@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="journey.forjobs.akazoo_project">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name="journey.forjobs.akazoo_project.application.AkazooApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/akazoo_logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="journey.forjobs.akazoo_project.activities.PlaylistsActivity"
+            android:label="@string/playlists_activity_title">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <service
+            android:name="journey.forjobs.akazoo_project.controllers.AkazooController"
+            android:enabled="true" />
+
+        <provider
+            android:name="journey.forjobs.akazoo_project.database.PlaylistContentProvider"
+            android:authorities="journey.forjobs.akazoo_project.contentprovider_playlists"
+            android:multiprocess="true" />
+
+        <provider
+            android:name="journey.forjobs.akazoo_project.database.TracksContentProvider"
+            android:authorities="journey.forjobs.akazoo_project.contentprovider_tracks"
+            android:multiprocess="true" />
+
+        <activity android:name="journey.forjobs.akazoo_project.activities.TracksActivity"
+            android:label="@string/tracks_activity_title">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="journey.forjobs.akazoo_project.activities.PlaylistsActivity" />
+        </activity>
+    </application>
+
+</manifest>
