@@ -41,6 +41,11 @@ public class TracksContentProvider extends ContentProvider {
         return false;
     }
 
+
+
+
+
+    //TODO
     @Override
     public Cursor query(Uri uri, String[] projection, String selection,
                         String[] selectionArgs, String sortOrder) {
@@ -55,17 +60,20 @@ public class TracksContentProvider extends ContentProvider {
         return null;
     }
 
+    //TODO
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         return Uri.parse(BASE_PATH + "/" + null);
     }
 
+    //TODO
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         int rowsDeleted = 0;
         return rowsDeleted;
     }
 
+    //TODO
     @Override
     public int update(Uri uri, ContentValues values, String selection,
                       String[] selectionArgs) {
@@ -74,6 +82,7 @@ public class TracksContentProvider extends ContentProvider {
         return rowsUpdated;
     }
 
+    //TODO
     private void checkColumns(String[] projection) {
 
     }

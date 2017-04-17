@@ -139,24 +139,5 @@ public class Playlist {
         Items = items;
     }
 
-    @Override
-    public String toString() {
-        return "Playlist{" +
-                "ObjectType='" + ObjectType + '\'' +
-                ", DateUpdated='" + DateUpdated + '\'' +
-                ", Duration=" + Duration +
-                ", FanCount=" + FanCount +
-                ", IsOwner=" + IsOwner +
-                ", ItemCount=" + ItemCount +
-                ", LargePhotoUrl='" + LargePhotoUrl + '\'' +
-                ", Name='" + Name + '\'' +
-                ", OwnerId='" + OwnerId + '\'' +
-                ", OwnerNickName='" + OwnerNickName + '\'' +
-                ", OwnerPhotoUrl='" + OwnerPhotoUrl + '\'' +
-                ", PhotoUrl='" + PhotoUrl + '\'' +
-                ", PlaylistId='" + PlaylistId + '\'' +
-                ", ViewerIsFan=" + ViewerIsFan +
-                ", Items=" + Items +
-                '}';
-    }
+
 }
