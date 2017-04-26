@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/akazoo_project.iml" filepath="$PROJECT_DIR$/akazoo_project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JourneyForJobs.iml" filepath="$PROJECT_DIR$/JourneyForJobs.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
