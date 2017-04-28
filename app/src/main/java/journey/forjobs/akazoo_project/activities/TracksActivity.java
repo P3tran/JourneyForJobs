@@ -5,14 +5,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import journey.forjobs.akazoo_project.R;
 import journey.forjobs.akazoo_project.database.DBTableHelper;
 import journey.forjobs.akazoo_project.database.TracksContentProvider;
+import journey.forjobs.akazoo_project.listAdapters.TracksListAdapter;
 import journey.forjobs.akazoo_project.model.Track;
 
 public class TracksActivity extends AkazooActivity {
+
+    @InjectView(R.id.tracks_list)
+    ListView mTracksList;
 
     private MyMessageReceiver mMessageReceiver = new MyMessageReceiver() {
         @Override
@@ -30,7 +43,27 @@ public class TracksActivity extends AkazooActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracks);
+        ButterKnife.inject(this);
 
+        ArrayList<Track> allTracks = new ArrayList();
+
+        for (int i=0; i<20; i++){
+            Track track = new Track();
+            track.setTrackId(i);
+            track.setTrackName("track" + i);
+            track.setArtistName("artist" + i);
+
+            allTracks.add(track);
+        }
+
+        final TracksListAdapter mTracksListAdapter = new TracksListAdapter(this, allTracks);
+        mTracksList.setAdapter(mTracksListAdapter);
+        mTracksList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showSnackBar("Your have clicked " + mTracksListAdapter.getTracks().get(position).getTrackName());
+            }
+        });
 
         {
             //insert track 1 into databse
@@ -95,6 +128,11 @@ public class TracksActivity extends AkazooActivity {
             //delete all values from database
             getContentResolver().delete(TracksContentProvider.CONTENT_URI, null, null);
         }
+    }
+
+    protected void showSnackBar(String message){
+        Snackbar mSnackBar = Snackbar.make(findViewById(R.id.root), message, Snackbar.LENGTH_LONG);
+        mSnackBar.show();
     }
 
 }

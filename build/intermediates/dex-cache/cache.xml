@@ -1,3 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
 
+    <item
+        is-multidex="true"
+        jar="/Users/johndaratzikis/Desktop/JourneyForJobs/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="4c61e773f2b7b54b157f9164631a1105d27afda4">
+        <dex dex="/Users/johndaratzikis/Desktop/JourneyForJobs/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_1e10b1a6e21a3c25029648521b1d73bd818b7115/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/Users/johndaratzikis/Desktop/JourneyForJobs/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="510aa6efc159983dfbffa676a0dae37568c0a46f">
+        <dex dex="/Users/johndaratzikis/Desktop/JourneyForJobs/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_f3b2043ac57f6bcb721a036a9758296caf076de0/classes.dex" />
+    </item>
+
+</items>

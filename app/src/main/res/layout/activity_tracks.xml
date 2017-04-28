@@ -9,4 +9,11 @@
     android:paddingTop="6dp"
     tools:context="journey.forjobs.akazoo_project.activities.TracksActivity">
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tracks_list">
+
+    </ListView>
+
 </LinearLayout>

@@ -3,8 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="90dp"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:padding="10dp"
     android:paddingLeft="6dp">
+
+    <TextView
+        android:id="@+id/track_name"
+        style="@style/tv_style" />
+
+    <TextView
+        android:id="@+id/track_artist"
+        style="@style/tv_style" />
+
+    <TextView
+        android:id="@+id/track_id"
+        style="@style/tv_style"/>
 
 </LinearLayout>
