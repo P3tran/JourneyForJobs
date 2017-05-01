@@ -38,19 +38,21 @@ public class RestClient {
 
     private static void setupRestClient() {
 
-        //setup OkHttpCLient3
+        //TODO setup OkHttpCLient3 with builder
 
 
-
-        //
-
-
-        //setup Retrofit
 
 
         //
 
 
+        //TODO setup Retrofit with builder
+
+
+        //
+
+
+        //TODO uncomment when ready
         //REST_API = retorift.create(RestAPI.class);
     }
 
