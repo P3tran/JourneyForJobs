@@ -3,6 +3,24 @@
 
     <item
         is-multidex="true"
+        jar="/home/petros/Projects/JourneyForJobs/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="510aa6efc159983dfbffa676a0dae37568c0a46f">
+        <dex dex="/home/petros/Projects/JourneyForJobs/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_78f837deb4d4216a889d1d86c83eed23e2b94769/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/petros/Projects/dummy/JourneyForJobs/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="27fa0f3bf38fc31dee157135b32ea03e8812e4c1">
+        <dex dex="/home/petros/Projects/dummy/JourneyForJobs/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_6454594f5aa61959f8d0338c18291c5d5cd3874a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="/home/petros/Projects/JourneyForJobs/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
@@ -12,12 +30,12 @@
     </item>
     <item
         is-multidex="true"
-        jar="/home/petros/Projects/JourneyForJobs/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jar="/home/petros/Projects/dummy/JourneyForJobs/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.0"
         sha1="510aa6efc159983dfbffa676a0dae37568c0a46f">
-        <dex dex="/home/petros/Projects/JourneyForJobs/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_78f837deb4d4216a889d1d86c83eed23e2b94769/classes.dex" />
+        <dex dex="/home/petros/Projects/dummy/JourneyForJobs/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_8171fae53b7a60b2ee9657e45ba59d6f7a19cecb/classes.dex" />
     </item>
 
 </items>
