@@ -26,26 +26,19 @@ public class DBTableHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PLAYLISTS_TRACK_COUNT = "playlist_track_count";
     public static final String COLUMN_PLAYLISTS_PLAYLIST_ID = "playlist_id";
 
-    //TODO Table Tracks
-
-
     // SQL statement to create table users
     private static final String CREATE_TABLE_PLAYLISTS = "create table " + TABLE_PLAYLISTS + "(" + COLUMN_PLAYLISTS_ID + " integer primary key autoincrement, " + COLUMN_PLAYLISTS_NAME + " text, " + COLUMN_PLAYLISTS_TRACK_COUNT
             + " integer, " + COLUMN_PLAYLISTS_PLAYLIST_ID + " text" + ");";
 
-    //TODO SQL statement to create table tracks
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_PLAYLISTS);
-        //TODO exec query to create table tracks
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.e(DBTableHelper.class.getName(), "Upgrading database from version " + oldVersion + " to " + newVersion + ", which will destroy all old data");
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PLAYLISTS);
-        //TODO exec query to drop table tracks
         onCreate(db);
     }
 }

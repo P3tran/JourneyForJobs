@@ -1,0 +1,9 @@
+# Created by .ignore support plugin (hsz.mobi)
+.gradle/
+.idea/
+JourneyForJobs.iml
+Akazoo.iml
+app.iml
+projectFilesBackup/
+build/
+local.properties
