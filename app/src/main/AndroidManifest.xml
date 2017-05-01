@@ -13,10 +13,7 @@
         android:theme="@style/AppTheme">
         <activity android:name="journey.forjobs.akazoo_project.activities.PlaylistsActivity"
             android:label="@string/playlists_activity_title">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
 
         </activity>
 
@@ -36,6 +33,15 @@
 
         <activity android:name="journey.forjobs.akazoo_project.activities.TracksActivity"
             android:label="@string/tracks_activity_title">
+
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="journey.forjobs.akazoo_project.activities.PlaylistsActivity" />
