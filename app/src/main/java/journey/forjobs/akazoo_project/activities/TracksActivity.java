@@ -1,10 +1,13 @@
 package journey.forjobs.akazoo_project.activities;
 
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.Looper;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -44,6 +47,11 @@ public class TracksActivity extends AkazooActivity {
     @InjectView(R.id.tracks_list)
     ListView mTracksList;
 
+    AkazooController mService;
+    boolean status;
+
+    String id;
+
     private MyMessageReceiver mMessageReceiver = new MyMessageReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -62,27 +70,8 @@ public class TracksActivity extends AkazooActivity {
         setContentView(R.layout.activity_tracks);
         ButterKnife.inject(this);
 
-        Intent intent = getIntent();
-        String id  = intent.getExtras().getString("id");
-
-        Call<GetTracksResponse> call = RestClient.call().getTracks(id);
-        call.enqueue(new Callback<GetTracksResponse>() {
-            @Override
-            public void onResponse(Call<GetTracksResponse> call, Response<GetTracksResponse> response) {
-                if(response.isSuccessful()){
-                    final Playlist playlist = response.body().getResult();
-                    final ArrayList<Track> tracks = playlist.getItems();
-
-                    final TracksListAdapter mTracksListAdapter = new TracksListAdapter(TracksActivity.this, tracks);
-                    mTracksList.setAdapter(mTracksListAdapter);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<GetTracksResponse> call, Throwable t) {
-                Log.d("Error", t.getLocalizedMessage());
-            }
-        });
+        Intent i = new Intent(this, AkazooController.class);
+        bindService(i,serviceConnection,Context.BIND_AUTO_CREATE);
 
     }
 
@@ -90,5 +79,32 @@ public class TracksActivity extends AkazooActivity {
         Snackbar mSnackBar = Snackbar.make(findViewById(R.id.root), message, Snackbar.LENGTH_LONG);
         mSnackBar.show();
     }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            AkazooController.LocalBinder binder = (AkazooController.LocalBinder) service;
+            mService = binder.getServerInstance();
+            status = true;
+
+            Intent intent = getIntent();
+            id  = intent.getExtras().getString("id");
+
+            mService.fetchTracks(id, new AkazooController.TracksComplection() {
+                @Override
+                public void onResponse(ArrayList<Track> tracks) {
+                    final TracksListAdapter mTracksListAdapter = new TracksListAdapter(TracksActivity.this, tracks);
+                    mTracksList.setAdapter(mTracksListAdapter);
+                }
+            });
+
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            status = false;
+        }
+    };
 
 }

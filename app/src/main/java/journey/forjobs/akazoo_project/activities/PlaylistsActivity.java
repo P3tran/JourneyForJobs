@@ -1,10 +1,13 @@
 package journey.forjobs.akazoo_project.activities;
 
+import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -16,6 +19,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import journey.forjobs.akazoo_project.controllers.AkazooController;
 import journey.forjobs.akazoo_project.database.DBTableHelper;
 import journey.forjobs.akazoo_project.database.PlaylistContentProvider;
 import journey.forjobs.akazoo_project.fragments.PlaylistsFragment;
@@ -33,6 +37,9 @@ public class PlaylistsActivity extends AkazooActivity {
 
     @InjectView(R.id.playlists_list)
     ListView mPlaylistsList;
+
+    AkazooController mService;
+    boolean status;
 
     private MyMessageReceiver mMessageReceiver = new MyMessageReceiver() {
         @Override
@@ -53,16 +60,28 @@ public class PlaylistsActivity extends AkazooActivity {
         setContentView(R.layout.activity_playlists);
         ButterKnife.inject(this);
 
-        Call<GetPlaylistsResponse> call = RestClient.call().getPlaylist();
-        call.enqueue(new Callback<GetPlaylistsResponse>() {
-            @Override
-            public void onResponse(Call<GetPlaylistsResponse> call, final Response<GetPlaylistsResponse> response) {
-                if(response.isSuccessful()){
-                    final ArrayList<Playlist> playlists = response.body().getResult();
+        Intent intent = new Intent(this, AkazooController.class);
+        bindService(intent,serviceConnection,Context.BIND_AUTO_CREATE);
 
+    }
+
+    protected void showSnackbar(String message){
+        Snackbar mSnackBar = Snackbar.make(findViewById(R.id.root), message, Snackbar.LENGTH_LONG);
+        mSnackBar.show();
+    }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            AkazooController.LocalBinder binder = (AkazooController.LocalBinder) service;
+            mService = binder.getServerInstance();
+            status = true;
+
+            mService.fetchPlaylists(new AkazooController.PlaylistsComplection() {
+                @Override
+                public void onResponse(ArrayList<Playlist> playlists) {
                     final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, playlists);
                     mPlaylistsList.setAdapter(mPlaylistListAdapter);
-
                     mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                         @Override
@@ -73,21 +92,14 @@ public class PlaylistsActivity extends AkazooActivity {
                         }
 
                     });
-
                 }
-            }
+            });
+        }
 
-            @Override
-            public void onFailure(Call<GetPlaylistsResponse> call, Throwable t) {
-                Log.d("Error", t.getLocalizedMessage());
-            }
-        });
-
-    }
-
-    protected void showSnackbar(String message){
-        Snackbar mSnackBar = Snackbar.make(findViewById(R.id.root), message, Snackbar.LENGTH_LONG);
-        mSnackBar.show();
-    }
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            status = false;
+        }
+    };
 
 }
