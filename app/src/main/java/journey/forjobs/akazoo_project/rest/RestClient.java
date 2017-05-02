@@ -9,31 +9,54 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
-import com.squareup.okhttp.OkHttpClient;
 
 import java.io.IOException;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import journey.forjobs.akazoo_project.BuildConfig;
 import journey.forjobs.akazoo_project.utils.Const;
-import retrofit.ErrorHandler;
-import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.OkClient;
-import retrofit.client.Request;
-import retrofit.client.Response;
-import retrofit.converter.GsonConverter;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Petros Efthymiou on 22/7/2016.
  */
 public class RestClient {
+    private static RestAPI REST_API;
+
+    static {
+        setupRestClient();
+    }
+
+
+    public static RestAPI call() {
+        return REST_API;
+    }
+
+    private static void setupRestClient() {
+
+        //TODO setup OkHttpCLient3 with builder
+
+
+
+
+        //
+
+
+        //TODO setup Retrofit with builder
+
+
+        //
+
+
+        //TODO uncomment when ready
+        //REST_API = retorift.create(RestAPI.class);
+    }
+
+
 }
+
 
