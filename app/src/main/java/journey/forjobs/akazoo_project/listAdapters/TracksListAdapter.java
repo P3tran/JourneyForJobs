@@ -17,6 +17,7 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import journey.forjobs.akazoo_project.R;
+import journey.forjobs.akazoo_project.model.Playlist;
 import journey.forjobs.akazoo_project.model.Track;
 
 /**
@@ -28,7 +29,7 @@ public class TracksListAdapter extends ArrayAdapter<Track>{
     List<Track> tracks = new ArrayList<Track>();
     Context context;
 
-    public TracksListAdapter(Context context, List<Track> tracks) {
+    public TracksListAdapter(Context context, ArrayList<Track> tracks) {
         super(context, R.layout.vw_list_item_track, tracks);
         this.context = context;
         this.tracks = tracks;

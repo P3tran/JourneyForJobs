@@ -25,12 +25,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by Petros Efthymiou on 22/7/2016.
  */
 public class RestClient {
+
     private static RestAPI REST_API;
 
     static {
         setupRestClient();
     }
-
 
     public static RestAPI call() {
         return REST_API;
@@ -40,20 +40,19 @@ public class RestClient {
 
         //TODO setup OkHttpCLient3 with builder
 
-
-
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
         //
 
 
         //TODO setup Retrofit with builder
-
-
+        Retrofit.Builder builder = new Retrofit.Builder().baseUrl("https://akazoo.com/").addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.client(httpClient.build()).build();
         //
 
 
         //TODO uncomment when ready
-        //REST_API = retorift.create(RestAPI.class);
+        REST_API = retrofit.create(RestAPI.class);
     }
 
 

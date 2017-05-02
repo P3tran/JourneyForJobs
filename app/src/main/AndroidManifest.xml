@@ -35,7 +35,8 @@
             android:multiprocess="true" />
 
         <activity android:name="journey.forjobs.akazoo_project.activities.TracksActivity"
-            android:label="@string/tracks_activity_title">
+            android:label="@string/tracks_activity_title"
+            android:parentActivityName=".activities.PlaylistsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="journey.forjobs.akazoo_project.activities.PlaylistsActivity" />

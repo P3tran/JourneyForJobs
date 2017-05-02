@@ -5,8 +5,16 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
+import journey.forjobs.akazoo_project.model.Playlist;
+import journey.forjobs.akazoo_project.rest.RestAPI;
+import journey.forjobs.akazoo_project.rest.RestClient;
 import journey.forjobs.akazoo_project.utils.Const;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AkazooController extends Service {
     IBinder mBinder = new LocalBinder();

@@ -5,17 +5,34 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 import journey.forjobs.akazoo_project.database.DBTableHelper;
 import journey.forjobs.akazoo_project.database.PlaylistContentProvider;
 import journey.forjobs.akazoo_project.fragments.PlaylistsFragment;
 import journey.forjobs.akazoo_project.R;
+import journey.forjobs.akazoo_project.listAdapters.PlaylistListAdapter;
 import journey.forjobs.akazoo_project.model.Playlist;
+import journey.forjobs.akazoo_project.model.Track;
+import journey.forjobs.akazoo_project.rest.RestClient;
+import journey.forjobs.akazoo_project.rest.pojos.GetPlaylistsResponse;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PlaylistsActivity extends AkazooActivity {
+
+    @InjectView(R.id.playlists_list)
+    ListView mPlaylistsList;
 
     private MyMessageReceiver mMessageReceiver = new MyMessageReceiver() {
         @Override
@@ -34,74 +51,43 @@ public class PlaylistsActivity extends AkazooActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlists);
+        ButterKnife.inject(this);
 
-        Intent intent = new Intent(PlaylistsActivity.this, TracksActivity.class);
-        startActivity(intent);
+        Call<GetPlaylistsResponse> call = RestClient.call().getPlaylist();
+        call.enqueue(new Callback<GetPlaylistsResponse>() {
+            @Override
+            public void onResponse(Call<GetPlaylistsResponse> call, final Response<GetPlaylistsResponse> response) {
+                if(response.isSuccessful()){
+                    final ArrayList<Playlist> playlists = response.body().getResult();
 
-        //dummy code to test the database
-        {
-            //insert playlist 1 into databse
-            ContentValues values = new ContentValues();
-            values.put(DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID, "id1");
-            values.put(DBTableHelper.COLUMN_PLAYLISTS_NAME, "playlist1");
-            values.put(DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT, 22);
-            getContentResolver().insert(
-                    PlaylistContentProvider.CONTENT_URI, values);
+                    final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, playlists);
+                    mPlaylistsList.setAdapter(mPlaylistListAdapter);
 
-            //insert playlist 2 into database
-            ContentValues values2 = new ContentValues();
-            values2.put(DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID, "id2");
-            values2.put(DBTableHelper.COLUMN_PLAYLISTS_NAME, "playlist2");
-            values2.put(DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT, 66);
-            getContentResolver().insert(
-                    PlaylistContentProvider.CONTENT_URI, values2);
+                    mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            //retrieve info from the database
-            {
-                Cursor mCursor;
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Intent intent = new Intent(PlaylistsActivity.this, TracksActivity.class);
+                            intent.putExtra("id", mPlaylistListAdapter.getItem(position).getPlaylistId());
+                            startActivity(intent);
+                        }
 
-                //used to know which columns name we need to retrieve
-                String[] mProjection = {
-                        DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID,
-                        DBTableHelper.COLUMN_PLAYLISTS_NAME,
-                        DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT
-                };
+                    });
 
-                //queries the database
-                mCursor = getContentResolver().query(
-                        PlaylistContentProvider.CONTENT_URI,  // The content URI of the words table - You need to use TracksContentProvider.CONTENT_URI to test yours
-                        mProjection,                       // The columns to return for each row
-                        null,
-                        null,
-                        null);
+                }
+            }
 
-                if (mCursor != null) {
-                    while (mCursor.moveToNext()) {
-                        //create empty object
-                        Playlist playlist = new Playlist();
+            @Override
+            public void onFailure(Call<GetPlaylistsResponse> call, Throwable t) {
+                Log.d("Error", t.getLocalizedMessage());
+            }
+        });
 
-                        // Gets the playlist name from the dabase
-                        String playlistNameRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_PLAYLISTS_NAME));
+    }
 
-                        // Gets the track count from the column database
-                        int tracksCountRetrievedFromDatabase = mCursor.getInt(mCursor.getColumnIndex(DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT));
-
-                        //put the value retrieved from databse into our object
-                        playlist.setName(playlistNameRetrievedFromDatabase);
-
-                        //put the value retrieved from databse into our object
-                        playlist.setItemCount(tracksCountRetrievedFromDatabase);
-
-
-                        //display the information we retrieved in the logs
-                        Log.d("MA TAG", "the playlist name is " + playlist.getName());
-                        Log.d("MA TAG", "the playlist track count is  " + playlist.getItemCount());
-                    }
-                }}
-
-            //delete all values from database
-            getContentResolver().delete(PlaylistContentProvider.CONTENT_URI, null, null);
-        }
+    protected void showSnackbar(String message){
+        Snackbar mSnackBar = Snackbar.make(findViewById(R.id.root), message, Snackbar.LENGTH_LONG);
+        mSnackBar.show();
     }
 
 }

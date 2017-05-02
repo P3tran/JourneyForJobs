@@ -2,6 +2,9 @@ package journey.forjobs.akazoo_project.rest;
 
 import android.util.Log;
 
+import java.util.List;
+
+import journey.forjobs.akazoo_project.model.Playlist;
 import journey.forjobs.akazoo_project.utils.Const;
 import retrofit2.Callback;
 
@@ -10,5 +13,7 @@ import retrofit2.Callback;
  */
 public abstract class RestCallback<T> implements Callback<T> {
 
+    RestCallback() {
 
+    }
 }
