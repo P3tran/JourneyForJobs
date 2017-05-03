@@ -11,9 +11,13 @@ import android.os.IBinder;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -38,6 +42,9 @@ public class PlaylistsActivity extends AkazooActivity {
     @InjectView(R.id.playlists_list)
     ListView mPlaylistsList;
 
+    @InjectView(R.id.pb_loader)
+    ProgressBar mProgressBar;
+
     AkazooController mService;
     boolean status;
 
@@ -60,6 +67,8 @@ public class PlaylistsActivity extends AkazooActivity {
         setContentView(R.layout.activity_playlists);
         ButterKnife.inject(this);
 
+        mProgressBar.setVisibility(View.VISIBLE);
+
         if (fetchPlaylistsFromDB() == null){
             Intent intent = new Intent(this, AkazooController.class);
             bindService(intent,serviceConnection,Context.BIND_AUTO_CREATE);
@@ -76,6 +85,7 @@ public class PlaylistsActivity extends AkazooActivity {
                 }
 
             });
+            mProgressBar.setVisibility(View.INVISIBLE);
         }
 
 
@@ -94,23 +104,8 @@ public class PlaylistsActivity extends AkazooActivity {
             mService = binder.getServerInstance();
             status = true;
 
-            mService.fetchPlaylists(new AkazooController.PlaylistsComplection() {
-                @Override
-                public void onResponse() {
-                    final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
-                    mPlaylistsList.setAdapter(mPlaylistListAdapter);
-                    mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            fetchPlaylists();
 
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            Intent intent = new Intent(PlaylistsActivity.this, TracksActivity.class);
-                            intent.putExtra("id", mPlaylistListAdapter.getItem(position).getPlaylistId());
-                            startActivity(intent);
-                        }
-
-                    });
-                }
-            });
         }
 
         @Override
@@ -118,6 +113,30 @@ public class PlaylistsActivity extends AkazooActivity {
             status = false;
         }
     };
+
+    public void fetchPlaylists(){
+
+        mService.fetchPlaylists(new AkazooController.PlaylistsComplection() {
+            @Override
+            public void onResponse() {
+                final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
+                mPlaylistsList.setAdapter(mPlaylistListAdapter);
+                mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Intent intent = new Intent(PlaylistsActivity.this, TracksActivity.class);
+                        intent.putExtra("id", mPlaylistListAdapter.getItem(position).getPlaylistId());
+                        startActivity(intent);
+                    }
+
+                });
+
+                mProgressBar.setVisibility(View.INVISIBLE);
+                unbindService(serviceConnection);
+            }
+        });
+    }
 
     public ArrayList<Playlist> fetchPlaylistsFromDB(){
 
@@ -167,6 +186,29 @@ public class PlaylistsActivity extends AkazooActivity {
             return null;
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+
+        switch (itemId) {
+            case R.id.action_refresh:
+                getContentResolver().delete(PlaylistContentProvider.CONTENT_URI, null, null);
+                mPlaylistsList.setAdapter(null);
+                mProgressBar.setVisibility(View.VISIBLE);
+                Intent intent = new Intent(this, AkazooController.class);
+                bindService(intent,serviceConnection,Context.BIND_AUTO_CREATE);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
