@@ -10,7 +10,7 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
-        buildConfigField 'String', 'HOST', '"http://akazoo.com/services/Test/"'
+        buildConfigField 'String', 'HOST', '"https://akazoo.com/services/Test/"'
     }
     buildTypes {
         release {
@@ -32,5 +32,6 @@ dependencies {
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.googlecode.android-query:android-query:0.25.9'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.6.0'
 
 }

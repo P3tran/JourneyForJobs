@@ -25,10 +25,10 @@ public interface RestAPI {
 //    void getTracks(@Query("playlistid") String playlistid, RestCallback<GetTracksResponse> callback);
 
 
-    @GET("/services/Test/TestMobileService.svc/playlists")
+    @GET("TestMobileService.svc/playlists")
     Call<GetPlaylistsResponse> getPlaylist();
 
-    @GET("/services/Test/TestMobileService.svc/playlist")
+    @GET("TestMobileService.svc/playlist")
     Call<GetTracksResponse> getTracks(@Query("playlistid") String playlistid);
 
 }
