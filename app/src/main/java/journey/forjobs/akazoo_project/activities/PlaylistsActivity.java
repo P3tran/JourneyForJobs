@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import journey.forjobs.akazoo_project.application.AkazooApplication;
 import journey.forjobs.akazoo_project.controllers.AkazooController;
 import journey.forjobs.akazoo_project.database.DBTableHelper;
 import journey.forjobs.akazoo_project.database.PlaylistContentProvider;
@@ -69,26 +70,24 @@ public class PlaylistsActivity extends AkazooActivity {
 
         mProgressBar.setVisibility(View.VISIBLE);
 
-        if (fetchPlaylistsFromDB() == null){
-            Intent intent = new Intent(this, AkazooController.class);
-            bindService(intent,serviceConnection,Context.BIND_AUTO_CREATE);
-        } else {
-            final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
-            mPlaylistsList.setAdapter(mPlaylistListAdapter);
-            mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(PlaylistsActivity.this, TracksActivity.class);
-                    intent.putExtra("id", mPlaylistListAdapter.getItem(position).getPlaylistId());
-                    startActivity(intent);
-                }
-
-            });
-            mProgressBar.setVisibility(View.INVISIBLE);
-        }
-
-
+//        if (fetchPlaylistsFromDB() == null){
+//            Intent intent = new Intent(this, AkazooController.class);
+//            bindService(intent,serviceConnection,Context.BIND_AUTO_CREATE);
+//        } else {
+//            final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
+//            mPlaylistsList.setAdapter(mPlaylistListAdapter);
+//            mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    Intent intent = new Intent(PlaylistsActivity.this, TracksActivity.class);
+//                    intent.putExtra("id", mPlaylistListAdapter.getItem(position).getPlaylistId());
+//                    startActivity(intent);
+//                }
+//
+//            });
+//            mProgressBar.setVisibility(View.INVISIBLE);
+//        }
 
     }
 

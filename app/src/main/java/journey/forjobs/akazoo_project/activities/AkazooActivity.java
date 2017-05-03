@@ -10,6 +10,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 
+import journey.forjobs.akazoo_project.application.AkazooApplication;
+import journey.forjobs.akazoo_project.controllers.AkazooController;
 import journey.forjobs.akazoo_project.utils.Const;
 
 
@@ -48,5 +50,8 @@ public abstract class AkazooActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(getmMessageReceiver());
     }
 
+    protected AkazooController getAkazooController(){
+        return AkazooApplication.getInstance().getController();
+    }
 
 }
