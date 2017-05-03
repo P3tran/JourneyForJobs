@@ -28,6 +28,7 @@ import butterknife.InjectView;
 import journey.forjobs.akazoo_project.R;
 import journey.forjobs.akazoo_project.controllers.AkazooController;
 import journey.forjobs.akazoo_project.database.DBTableHelper;
+import journey.forjobs.akazoo_project.database.PlaylistContentProvider;
 import journey.forjobs.akazoo_project.database.TracksContentProvider;
 import journey.forjobs.akazoo_project.listAdapters.PlaylistListAdapter;
 import journey.forjobs.akazoo_project.listAdapters.TracksListAdapter;
@@ -92,8 +93,8 @@ public class TracksActivity extends AkazooActivity {
 
             mService.fetchTracks(id, new AkazooController.TracksComplection() {
                 @Override
-                public void onResponse(ArrayList<Track> tracks) {
-                    final TracksListAdapter mTracksListAdapter = new TracksListAdapter(TracksActivity.this, tracks);
+                public void onResponse() {
+                    final TracksListAdapter mTracksListAdapter = new TracksListAdapter(TracksActivity.this, fetchTracksFromDB());
                     mTracksList.setAdapter(mTracksListAdapter);
                 }
             });
@@ -106,5 +107,51 @@ public class TracksActivity extends AkazooActivity {
             status = false;
         }
     };
+
+    public ArrayList<Track> fetchTracksFromDB(){
+
+        ArrayList<Track> tracks = new ArrayList<Track>();
+        Cursor mCursor;
+
+        String[] mProjection = {
+                DBTableHelper.COLUMN_TRACKS_TRACK_ID,
+                DBTableHelper.COLUMN_TRACKS_NAME,
+                DBTableHelper.COLUMN_ARTIST_NAME
+        };
+
+        mCursor = getContentResolver().query(
+                TracksContentProvider.CONTENT_URI,
+                mProjection,
+                null,
+                null,
+                null);
+
+        if (mCursor != null) {
+            while (mCursor.moveToNext()) {
+
+                Track track = new Track();
+
+                String trackNameRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_TRACKS_NAME));
+
+                String tracksArtistsNameRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_ARTIST_NAME));
+
+                Long tracksIdRetrievedFromDatabase = mCursor.getLong(mCursor.getColumnIndex(DBTableHelper.COLUMN_TRACKS_TRACK_ID));
+
+                track.setTrackName(trackNameRetrievedFromDatabase);
+
+                track.setArtistName(tracksArtistsNameRetrievedFromDatabase);
+
+                track.setTrackId(tracksIdRetrievedFromDatabase);
+
+                tracks.add(track);
+
+            }
+        }
+
+        getContentResolver().delete(TracksContentProvider.CONTENT_URI, null, null);
+
+        return tracks;
+
+    }
 
 }

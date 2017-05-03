@@ -26,10 +26,7 @@ public interface RestAPI {
 
 
     @GET("/services/Test/TestMobileService.svc/playlists")
-    //Call<Playlist> getPlaylist();
-    //Call<List<Playlist>> getPlaylist();
     Call<GetPlaylistsResponse> getPlaylist();
-    //void getPlaylist(RestCallback<GetPlaylistsResponse> callback);
 
     @GET("/services/Test/TestMobileService.svc/playlist")
     Call<GetTracksResponse> getTracks(@Query("playlistid") String playlistid);

@@ -1,6 +1,7 @@
 package journey.forjobs.akazoo_project.controllers;
 
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
@@ -9,6 +10,9 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import journey.forjobs.akazoo_project.database.DBTableHelper;
+import journey.forjobs.akazoo_project.database.PlaylistContentProvider;
+import journey.forjobs.akazoo_project.database.TracksContentProvider;
 import journey.forjobs.akazoo_project.model.Playlist;
 import journey.forjobs.akazoo_project.model.Track;
 import journey.forjobs.akazoo_project.rest.RestAPI;
@@ -57,7 +61,17 @@ public class AkazooController extends Service {
             public void onResponse(Call<GetPlaylistsResponse> call, final Response<GetPlaylistsResponse> response) {
                 if(response.isSuccessful()){
                     final ArrayList<Playlist> playlists = response.body().getResult();
-                    complection.onResponse(playlists);
+
+                    for (Playlist playlist: playlists){
+                        ContentValues values = new ContentValues();
+                        values.put(DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID, playlist.getPlaylistId());
+                        values.put(DBTableHelper.COLUMN_PLAYLISTS_NAME, playlist.getName());
+                        values.put(DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT, playlist.getItemCount());
+                        getContentResolver().insert(
+                                PlaylistContentProvider.CONTENT_URI, values);
+                    }
+
+                    complection.onResponse();
                 }
             }
 
@@ -77,7 +91,17 @@ public class AkazooController extends Service {
                 if(response.isSuccessful()){
                     final Playlist playlist = response.body().getResult();
                     final ArrayList<Track> tracks = playlist.getItems();
-                    complection.onResponse(tracks);
+
+                    for (Track track: tracks){
+                        ContentValues values = new ContentValues();
+                        values.put(DBTableHelper.COLUMN_TRACKS_TRACK_ID, track.getTrackId());
+                        values.put(DBTableHelper.COLUMN_TRACKS_NAME, track.getTrackName());
+                        values.put(DBTableHelper.COLUMN_ARTIST_NAME, track.getArtistName());
+                        getContentResolver().insert(
+                                TracksContentProvider.CONTENT_URI, values);
+                    }
+
+                    complection.onResponse();
                 }
             }
 
@@ -91,11 +115,11 @@ public class AkazooController extends Service {
 
 
     public interface TracksComplection {
-        void onResponse(ArrayList<Track> tracks);
+        void onResponse();
     }
 
     public interface PlaylistsComplection {
-        void onResponse(ArrayList<Playlist> playlists);
+        void onResponse();
     }
 
 }

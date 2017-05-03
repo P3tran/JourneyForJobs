@@ -79,8 +79,8 @@ public class PlaylistsActivity extends AkazooActivity {
 
             mService.fetchPlaylists(new AkazooController.PlaylistsComplection() {
                 @Override
-                public void onResponse(ArrayList<Playlist> playlists) {
-                    final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, playlists);
+                public void onResponse() {
+                    final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
                     mPlaylistsList.setAdapter(mPlaylistListAdapter);
                     mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
@@ -101,5 +101,51 @@ public class PlaylistsActivity extends AkazooActivity {
             status = false;
         }
     };
+
+    public ArrayList<Playlist> fetchPlaylistsFromDB(){
+
+        ArrayList<Playlist> playlists = new ArrayList<Playlist>();
+            Cursor mCursor;
+
+            String[] mProjection = {
+                    DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID,
+                    DBTableHelper.COLUMN_PLAYLISTS_NAME,
+                    DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT
+            };
+
+            mCursor = getContentResolver().query(
+                    PlaylistContentProvider.CONTENT_URI,
+                    mProjection,
+                    null,
+                    null,
+                    null);
+
+            if (mCursor != null) {
+                while (mCursor.moveToNext()) {
+
+                    Playlist playlist = new Playlist();
+
+                    String playlistNameRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_PLAYLISTS_NAME));
+
+                    int tracksCountRetrievedFromDatabase = mCursor.getInt(mCursor.getColumnIndex(DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT));
+
+                    String playlistIdRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID));
+
+                    playlist.setName(playlistNameRetrievedFromDatabase);
+
+                    playlist.setPlaylistId(playlistIdRetrievedFromDatabase);
+
+                    playlist.setItemCount(tracksCountRetrievedFromDatabase);
+
+                    playlists.add(playlist);
+
+                }
+            }
+
+        getContentResolver().delete(PlaylistContentProvider.CONTENT_URI, null, null);
+
+        return playlists;
+
+    }
 
 }

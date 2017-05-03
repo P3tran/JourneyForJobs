@@ -27,6 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RestClient {
 
     private static RestAPI REST_API;
+    private static String BASE_URL = "https://akazoo.com/";
 
     static {
         setupRestClient();
@@ -38,20 +39,11 @@ public class RestClient {
 
     private static void setupRestClient() {
 
-        //TODO setup OkHttpCLient3 with builder
-
         OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
-        //
-
-
-        //TODO setup Retrofit with builder
-        Retrofit.Builder builder = new Retrofit.Builder().baseUrl("https://akazoo.com/").addConverterFactory(GsonConverterFactory.create());
+        Retrofit.Builder builder = new Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create());
         Retrofit retrofit = builder.client(httpClient.build()).build();
-        //
 
-
-        //TODO uncomment when ready
         REST_API = retrofit.create(RestAPI.class);
     }
 
