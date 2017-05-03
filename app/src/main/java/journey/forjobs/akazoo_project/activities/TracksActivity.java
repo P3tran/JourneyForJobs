@@ -150,7 +150,11 @@ public class TracksActivity extends AkazooActivity {
 
         getContentResolver().delete(TracksContentProvider.CONTENT_URI, null, null);
 
-        return tracks;
+        if (mCursor.getCount() > 0){
+            return tracks;
+        }else {
+            return null;
+        }
 
     }
 

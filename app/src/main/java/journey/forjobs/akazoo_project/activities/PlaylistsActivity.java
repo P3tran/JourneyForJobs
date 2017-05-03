@@ -60,8 +60,25 @@ public class PlaylistsActivity extends AkazooActivity {
         setContentView(R.layout.activity_playlists);
         ButterKnife.inject(this);
 
-        Intent intent = new Intent(this, AkazooController.class);
-        bindService(intent,serviceConnection,Context.BIND_AUTO_CREATE);
+        if (fetchPlaylistsFromDB() == null){
+            Intent intent = new Intent(this, AkazooController.class);
+            bindService(intent,serviceConnection,Context.BIND_AUTO_CREATE);
+        } else {
+            final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
+            mPlaylistsList.setAdapter(mPlaylistListAdapter);
+            mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(PlaylistsActivity.this, TracksActivity.class);
+                    intent.putExtra("id", mPlaylistListAdapter.getItem(position).getPlaylistId());
+                    startActivity(intent);
+                }
+
+            });
+        }
+
+
 
     }
 
@@ -142,9 +159,13 @@ public class PlaylistsActivity extends AkazooActivity {
                 }
             }
 
-        getContentResolver().delete(PlaylistContentProvider.CONTENT_URI, null, null);
+        //getContentResolver().delete(PlaylistContentProvider.CONTENT_URI, null, null);
 
-        return playlists;
+        if (mCursor.getCount() > 0){
+            return playlists;
+        }else {
+            return null;
+        }
 
     }
 
