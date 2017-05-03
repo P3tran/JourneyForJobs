@@ -46,7 +46,7 @@ public class PlaylistsActivity extends AkazooActivity {
     @InjectView(R.id.pb_loader)
     ProgressBar mProgressBar;
 
-    AkazooController mService;
+    protected AkazooController mController;
     boolean status;
 
     private MyMessageReceiver mMessageReceiver = new MyMessageReceiver() {
@@ -70,24 +70,25 @@ public class PlaylistsActivity extends AkazooActivity {
 
         mProgressBar.setVisibility(View.VISIBLE);
 
-//        if (fetchPlaylistsFromDB() == null){
-//            Intent intent = new Intent(this, AkazooController.class);
-//            bindService(intent,serviceConnection,Context.BIND_AUTO_CREATE);
-//        } else {
-//            final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
-//            mPlaylistsList.setAdapter(mPlaylistListAdapter);
-//            mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    Intent intent = new Intent(PlaylistsActivity.this, TracksActivity.class);
-//                    intent.putExtra("id", mPlaylistListAdapter.getItem(position).getPlaylistId());
-//                    startActivity(intent);
-//                }
-//
-//            });
-//            mProgressBar.setVisibility(View.INVISIBLE);
-//        }
+        if (fetchPlaylistsFromDB() == null){
+            Intent intent = new Intent(this, AkazooController.class);
+            bindService(intent,serviceConnection, Context.BIND_AUTO_CREATE);
+        }
+        else {
+            final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
+            mPlaylistsList.setAdapter(mPlaylistListAdapter);
+            mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(PlaylistsActivity.this, TracksActivity.class);
+                    intent.putExtra("id", mPlaylistListAdapter.getItem(position).getPlaylistId());
+                    startActivity(intent);
+                }
+
+            });
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
 
     }
 
@@ -96,26 +97,9 @@ public class PlaylistsActivity extends AkazooActivity {
         mSnackBar.show();
     }
 
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            AkazooController.LocalBinder binder = (AkazooController.LocalBinder) service;
-            mService = binder.getServerInstance();
-            status = true;
-
-            fetchPlaylists();
-
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            status = false;
-        }
-    };
-
     public void fetchPlaylists(){
 
-        mService.fetchPlaylists(new AkazooController.PlaylistsComplection() {
+        mController.fetchPlaylists(new AkazooController.PlaylistsComplection() {
             @Override
             public void onResponse() {
                 final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
@@ -177,8 +161,6 @@ public class PlaylistsActivity extends AkazooActivity {
                 }
             }
 
-        //getContentResolver().delete(PlaylistContentProvider.CONTENT_URI, null, null);
-
         if (mCursor.getCount() > 0){
             return playlists;
         }else {
@@ -209,5 +191,21 @@ public class PlaylistsActivity extends AkazooActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            AkazooController.LocalBinder binder = (AkazooController.LocalBinder) service;
+            mController = binder.getServerInstance();
+            status = true;
+
+            fetchPlaylists();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            status = false;
+        }
+    };
 
 }

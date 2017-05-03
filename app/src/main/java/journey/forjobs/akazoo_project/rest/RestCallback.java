@@ -15,7 +15,7 @@ import retrofit2.Response;
  */
 public abstract class RestCallback<T> implements Callback<T> {
 
-    RestCallback() {
+    public RestCallback() {
 
     }
 
@@ -28,7 +28,11 @@ public abstract class RestCallback<T> implements Callback<T> {
     public void onResponse(Call<T> call, Response<T> response) {
         Log.i(Const.LOG_REST_TAG, "Generic success");
         T responseContent = (T) response.body();
-        handleSuccess(responseContent);
+        if (response.isSuccessful()){
+            handleSuccess(responseContent);
+        }else {
+            handleFailure(response.code(), response.message());
+        }
     }
 
     public abstract void handleExeption(Throwable exception);
