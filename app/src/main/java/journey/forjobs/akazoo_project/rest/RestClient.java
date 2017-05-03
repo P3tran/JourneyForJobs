@@ -18,6 +18,7 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import retrofit2.Converter;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -39,21 +40,16 @@ public class RestClient {
     private static void setupRestClient() {
 
         //TODO setup OkHttpCLient3 with builder
-
-
-
-
-        //
-
+        OkHttpClient.Builder client = new OkHttpClient.Builder();
 
         //TODO setup Retrofit with builder
-
-
-        //
-
+        Retrofit.Builder builder = new Retrofit.Builder()
+                .baseUrl("https://akazoo.com/")
+                .addConverterFactory(GsonConverterFactory.create());
+        Retrofit retrofit = builder.client(client.build()).build();
 
         //TODO uncomment when ready
-        //REST_API = retorift.create(RestAPI.class);
+        REST_API = retrofit.create(RestAPI.class);
     }
 
 
