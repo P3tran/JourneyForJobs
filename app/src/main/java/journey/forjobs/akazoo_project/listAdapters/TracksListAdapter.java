@@ -52,9 +52,9 @@ public class TracksListAdapter extends ArrayAdapter<Track>{
             holder = new ViewHolder(view);
             view.setTag(holder);
         }
-        holder.trackName.setText(tracks.get(position).getTrackName());
-        holder.trackArtist.setText(tracks.get(position).getArtistName());
-        holder.trackId.setText(Long.toString(tracks.get(position).getTrackId()));
+        holder.trackName.setText("Name: " + tracks.get(position).getTrackName());
+        holder.trackArtist.setText("Artist: " + tracks.get(position).getArtistName());
+        holder.trackId.setText("Id: " + Long.toString(tracks.get(position).getTrackId()));
         Picasso.with(context).load(tracks.get(position).getImageUrl()).into(holder.trackImageView);
 
         return view;

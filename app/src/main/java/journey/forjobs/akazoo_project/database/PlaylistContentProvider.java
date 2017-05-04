@@ -175,7 +175,8 @@ public class PlaylistContentProvider extends ContentProvider {
         String[] available = { DBTableHelper.COLUMN_PLAYLISTS_NAME,
                 DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT,
                 DBTableHelper.COLUMN_PLAYLISTS_ID,
-                DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID};
+                DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID,
+                DBTableHelper.COLUMN_PLAYLISTS_PHOTO_URL};
         if (projection != null) {
             HashSet<String> requestedColumns = new HashSet<String>(
                     Arrays.asList(projection));

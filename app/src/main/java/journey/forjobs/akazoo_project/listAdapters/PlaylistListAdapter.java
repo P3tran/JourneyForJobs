@@ -51,8 +51,8 @@ public class PlaylistListAdapter extends ArrayAdapter<Playlist> {
             holder = new PlaylistListAdapter.ViewHolder(view);
             view.setTag(holder);
         }
-        holder.playlistName.setText(playlists.get(position).getName());
-        holder.playlistItemCount.setText(String.valueOf(playlists.get(position).getItemCount()));
+        holder.playlistName.setText("Playlist: " + playlists.get(position).getName());
+        holder.playlistItemCount.setText("Songs: " + String.valueOf(playlists.get(position).getItemCount()));
         Picasso.with(context).load(playlists.get(position).getPhotoUrl()).into(holder.playlistImageView);
 
 

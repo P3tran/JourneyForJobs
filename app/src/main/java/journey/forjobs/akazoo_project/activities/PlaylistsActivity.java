@@ -19,6 +19,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
@@ -58,7 +60,6 @@ public class PlaylistsActivity extends AkazooActivity {
         return mMessageReceiver;
     }
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +69,7 @@ public class PlaylistsActivity extends AkazooActivity {
         mProgressBar.setVisibility(View.VISIBLE);
 
         if (fetchPlaylistsFromDB() == null){
-            fetchPlaylists();
+            //fetchPlaylists();
         }
         else {
             final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
@@ -124,7 +125,8 @@ public class PlaylistsActivity extends AkazooActivity {
             String[] mProjection = {
                     DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID,
                     DBTableHelper.COLUMN_PLAYLISTS_NAME,
-                    DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT
+                    DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT,
+                    DBTableHelper.COLUMN_PLAYLISTS_PHOTO_URL
             };
 
             mCursor = getContentResolver().query(
@@ -145,11 +147,15 @@ public class PlaylistsActivity extends AkazooActivity {
 
                     String playlistIdRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID));
 
+                    String playlistPhotoUrlRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_PLAYLISTS_PHOTO_URL));
+
                     playlist.setName(playlistNameRetrievedFromDatabase);
 
                     playlist.setPlaylistId(playlistIdRetrievedFromDatabase);
 
                     playlist.setItemCount(tracksCountRetrievedFromDatabase);
+
+                    playlist.setPhotoUrl(playlistPhotoUrlRetrievedFromDatabase);
 
                     playlists.add(playlist);
 

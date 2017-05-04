@@ -3,11 +3,18 @@ package journey.forjobs.akazoo_project.controllers;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.ImageView;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import journey.forjobs.akazoo_project.database.DBTableHelper;
@@ -71,6 +78,7 @@ public class AkazooController extends Service {
                     values.put(DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID, playlist.getPlaylistId());
                     values.put(DBTableHelper.COLUMN_PLAYLISTS_NAME, playlist.getName());
                     values.put(DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT, playlist.getItemCount());
+                    values.put(DBTableHelper.COLUMN_PLAYLISTS_PHOTO_URL, playlist.getPhotoUrl());
                     getContentResolver().insert(PlaylistContentProvider.CONTENT_URI, values);
                 }
                 complection.onResponse();
