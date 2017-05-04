@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +53,7 @@ public class PlaylistListAdapter extends ArrayAdapter<Playlist> {
         }
         holder.playlistName.setText(playlists.get(position).getName());
         holder.playlistItemCount.setText(String.valueOf(playlists.get(position).getItemCount()));
+        Picasso.with(context).load(playlists.get(position).getPhotoUrl()).into(holder.playlistImageView);
 
 
         return view;
@@ -60,6 +64,8 @@ public class PlaylistListAdapter extends ArrayAdapter<Playlist> {
         TextView playlistName;
         @InjectView(R.id.playlist_item_count)
         TextView playlistItemCount;
+        @InjectView(R.id.iv_image_view)
+        ImageView playlistImageView;
         public ViewHolder(View view){
             ButterKnife.inject(this, view);
         }

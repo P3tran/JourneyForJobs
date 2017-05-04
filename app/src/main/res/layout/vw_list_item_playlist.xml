@@ -13,4 +13,10 @@
         android:id="@+id/playlist_item_count"
         style="@style/tv_style"/>
 
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/iv_image_view"
+        android:src="@mipmap/ic_launcher"/>
+
 </LinearLayout>

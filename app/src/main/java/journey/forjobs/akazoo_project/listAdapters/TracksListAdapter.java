@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +55,7 @@ public class TracksListAdapter extends ArrayAdapter<Track>{
         holder.trackName.setText(tracks.get(position).getTrackName());
         holder.trackArtist.setText(tracks.get(position).getArtistName());
         holder.trackId.setText(Long.toString(tracks.get(position).getTrackId()));
+        Picasso.with(context).load(tracks.get(position).getImageUrl()).into(holder.trackImageView);
 
         return view;
     }
@@ -63,6 +67,8 @@ public class TracksListAdapter extends ArrayAdapter<Track>{
         TextView trackArtist;
         @InjectView(R.id.track_id)
         TextView trackId;
+        @InjectView(R.id.iv_image_view)
+        ImageView trackImageView;
         public ViewHolder(View view){
             ButterKnife.inject(this, view);
         }
