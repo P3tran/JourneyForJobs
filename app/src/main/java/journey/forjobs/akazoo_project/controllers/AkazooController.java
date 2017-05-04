@@ -27,9 +27,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AkazooController extends Service {
-    IBinder mBinder = new LocalBinder();
+    IBinder mBinder;
 
     public AkazooController() {
+        mBinder = new LocalBinder();
     }
 
     @Override
@@ -84,33 +85,6 @@ public class AkazooController extends Service {
 
     public void fetchTracks(String id , final TracksComplection complection){
 
-//        Call<GetTracksResponse> call = RestClient.call().getTracks(id);
-//        call.enqueue(new Callback<GetTracksResponse>() {
-//            @Override
-//            public void onResponse(Call<GetTracksResponse> call, Response<GetTracksResponse> response) {
-//                if(response.isSuccessful()){
-//                    final Playlist playlist = response.body().getResult();
-//                    final ArrayList<Track> tracks = playlist.getItems();
-//
-//                    for (Track track: tracks){
-//                        ContentValues values = new ContentValues();
-//                        values.put(DBTableHelper.COLUMN_TRACKS_TRACK_ID, track.getTrackId());
-//                        values.put(DBTableHelper.COLUMN_TRACKS_NAME, track.getTrackName());
-//                        values.put(DBTableHelper.COLUMN_ARTIST_NAME, track.getArtistName());
-//                        getContentResolver().insert(
-//                                TracksContentProvider.CONTENT_URI, values);
-//                    }
-//
-//                    complection.onResponse();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<GetTracksResponse> call, Throwable t) {
-//                Log.d("Error", t.getLocalizedMessage());
-//            }
-//        });
-
         Call<GetTracksResponse> call = RestClient.call().getTracks(id);
         call.enqueue(new RestCallback<GetTracksResponse>() {
             @Override
@@ -122,18 +96,9 @@ public class AkazooController extends Service {
             public void handleSuccess(GetTracksResponse response) {
 
                 final Playlist playlist = response.getResult();
-                    final ArrayList<Track> tracks = playlist.getItems();
+                final ArrayList<Track> tracks = playlist.getItems();
 
-                    for (Track track: tracks){
-                        ContentValues values = new ContentValues();
-                        values.put(DBTableHelper.COLUMN_TRACKS_TRACK_ID, track.getTrackId());
-                        values.put(DBTableHelper.COLUMN_TRACKS_NAME, track.getTrackName());
-                        values.put(DBTableHelper.COLUMN_ARTIST_NAME, track.getArtistName());
-                        getContentResolver().insert(
-                                TracksContentProvider.CONTENT_URI, values);
-                    }
-
-                    complection.onResponse();
+                complection.onResponse(tracks);
 
             }
 
@@ -145,9 +110,12 @@ public class AkazooController extends Service {
 
     }
 
+    public void test(){
+        Log.d("APPLICATION", "TEST");
+    }
 
     public interface TracksComplection {
-        void onResponse();
+        void onResponse(ArrayList<Track> complection);
     }
 
     public interface PlaylistsComplection {

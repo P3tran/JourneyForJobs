@@ -48,9 +48,6 @@ public class TracksActivity extends AkazooActivity {
     @InjectView(R.id.tracks_list)
     ListView mTracksList;
 
-    AkazooController mService;
-    boolean status;
-
     String id;
 
     private MyMessageReceiver mMessageReceiver = new MyMessageReceiver() {
@@ -71,91 +68,21 @@ public class TracksActivity extends AkazooActivity {
         setContentView(R.layout.activity_tracks);
         ButterKnife.inject(this);
 
-        Intent i = new Intent(this, AkazooController.class);
-        bindService(i,serviceConnection,Context.BIND_AUTO_CREATE);
+        Intent intent = getIntent();
+        id  = intent.getExtras().getString("id");
 
+        getAkazooController().fetchTracks(id, new AkazooController.TracksComplection() {
+            @Override
+            public void onResponse(ArrayList<Track> tracks) {
+                final TracksListAdapter mTracksListAdapter = new TracksListAdapter(TracksActivity.this, tracks);
+                mTracksList.setAdapter(mTracksListAdapter);
+            }
+        });
     }
 
     protected void showSnackBar(String message){
         Snackbar mSnackBar = Snackbar.make(findViewById(R.id.root), message, Snackbar.LENGTH_LONG);
         mSnackBar.show();
-    }
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            AkazooController.LocalBinder binder = (AkazooController.LocalBinder) service;
-            mService = binder.getServerInstance();
-            status = true;
-
-            Intent intent = getIntent();
-            id  = intent.getExtras().getString("id");
-
-            mService.fetchTracks(id, new AkazooController.TracksComplection() {
-                @Override
-                public void onResponse() {
-                    final TracksListAdapter mTracksListAdapter = new TracksListAdapter(TracksActivity.this, fetchTracksFromDB());
-                    mTracksList.setAdapter(mTracksListAdapter);
-                }
-            });
-
-
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            status = false;
-        }
-    };
-
-    public ArrayList<Track> fetchTracksFromDB(){
-
-        ArrayList<Track> tracks = new ArrayList<Track>();
-        Cursor mCursor;
-
-        String[] mProjection = {
-                DBTableHelper.COLUMN_TRACKS_TRACK_ID,
-                DBTableHelper.COLUMN_TRACKS_NAME,
-                DBTableHelper.COLUMN_ARTIST_NAME
-        };
-
-        mCursor = getContentResolver().query(
-                TracksContentProvider.CONTENT_URI,
-                mProjection,
-                null,
-                null,
-                null);
-
-        if (mCursor != null) {
-            while (mCursor.moveToNext()) {
-
-                Track track = new Track();
-
-                String trackNameRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_TRACKS_NAME));
-
-                String tracksArtistsNameRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_ARTIST_NAME));
-
-                Long tracksIdRetrievedFromDatabase = mCursor.getLong(mCursor.getColumnIndex(DBTableHelper.COLUMN_TRACKS_TRACK_ID));
-
-                track.setTrackName(trackNameRetrievedFromDatabase);
-
-                track.setArtistName(tracksArtistsNameRetrievedFromDatabase);
-
-                track.setTrackId(tracksIdRetrievedFromDatabase);
-
-                tracks.add(track);
-
-            }
-        }
-
-        getContentResolver().delete(TracksContentProvider.CONTENT_URI, null, null);
-
-        if (mCursor.getCount() > 0){
-            return tracks;
-        }else {
-            return null;
-        }
-
     }
 
 }

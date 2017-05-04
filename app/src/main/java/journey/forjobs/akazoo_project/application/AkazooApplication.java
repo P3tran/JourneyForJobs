@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -24,8 +25,8 @@ public class AkazooApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Intent intent = new Intent(this, AkazooController.class);
-        bindService(intent,serviceConnection, Context.BIND_AUTO_CREATE);
+        Intent intent = new Intent(getApplicationContext(), AkazooController.class);
+        getApplicationContext().bindService(intent,serviceConnection, getApplicationContext().BIND_AUTO_CREATE);
 
     }
 
@@ -35,6 +36,8 @@ public class AkazooApplication extends Application {
             AkazooController.LocalBinder binder = (AkazooController.LocalBinder) service;
             mController = binder.getServerInstance();
             status = true;
+
+            Log.d("APPLICATIOM", "SERVICE BIND");
         }
 
         @Override
@@ -43,12 +46,11 @@ public class AkazooApplication extends Application {
         }
     };
 
-    public static AkazooApplication getInstance(){
+    public static AkazooApplication getmInstance() {
         return mInstance;
     }
 
-    public AkazooController getController() {
+    public AkazooController getmController() {
         return mController;
     }
-
 }

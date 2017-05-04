@@ -46,9 +46,6 @@ public class PlaylistsActivity extends AkazooActivity {
     @InjectView(R.id.pb_loader)
     ProgressBar mProgressBar;
 
-    protected AkazooController mController;
-    boolean status;
-
     private MyMessageReceiver mMessageReceiver = new MyMessageReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -71,8 +68,7 @@ public class PlaylistsActivity extends AkazooActivity {
         mProgressBar.setVisibility(View.VISIBLE);
 
         if (fetchPlaylistsFromDB() == null){
-            Intent intent = new Intent(this, AkazooController.class);
-            bindService(intent,serviceConnection, Context.BIND_AUTO_CREATE);
+            fetchPlaylists();
         }
         else {
             final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
@@ -99,7 +95,7 @@ public class PlaylistsActivity extends AkazooActivity {
 
     public void fetchPlaylists(){
 
-        mController.fetchPlaylists(new AkazooController.PlaylistsComplection() {
+        getAkazooController().fetchPlaylists(new AkazooController.PlaylistsComplection() {
             @Override
             public void onResponse() {
                 final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
@@ -116,7 +112,6 @@ public class PlaylistsActivity extends AkazooActivity {
                 });
 
                 mProgressBar.setVisibility(View.INVISIBLE);
-                unbindService(serviceConnection);
             }
         });
     }
@@ -184,28 +179,13 @@ public class PlaylistsActivity extends AkazooActivity {
                 getContentResolver().delete(PlaylistContentProvider.CONTENT_URI, null, null);
                 mPlaylistsList.setAdapter(null);
                 mProgressBar.setVisibility(View.VISIBLE);
-                Intent intent = new Intent(this, AkazooController.class);
-                bindService(intent,serviceConnection,Context.BIND_AUTO_CREATE);
+
+                fetchPlaylists();
+
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            AkazooController.LocalBinder binder = (AkazooController.LocalBinder) service;
-            mController = binder.getServerInstance();
-            status = true;
-
-            fetchPlaylists();
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            status = false;
-        }
-    };
 
 }

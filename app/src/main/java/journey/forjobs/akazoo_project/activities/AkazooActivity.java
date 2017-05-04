@@ -52,9 +52,9 @@ public abstract class AkazooActivity extends AppCompatActivity {
 
     protected AkazooController getAkazooController(){
 
-        AkazooApplication application = (AkazooApplication) getApplication();
+        AkazooApplication application = (AkazooApplication) getApplicationContext();
 
-        return application.getController();
+        return application.getmController();
     }
 
 }
