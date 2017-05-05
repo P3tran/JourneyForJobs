@@ -10,4 +10,5 @@
     <string name="playlist_empty">Playlist is empty, are you blind ?</string>
 
     <string name="transition_playlist_name">transition_playlist_name</string>
+    <string name="generic_rest_error_message">Service is temporary unavailable</string>
 </resources>
