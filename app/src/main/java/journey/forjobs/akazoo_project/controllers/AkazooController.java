@@ -17,6 +17,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import journey.forjobs.akazoo_project.R;
 import journey.forjobs.akazoo_project.database.DBTableHelper;
 import journey.forjobs.akazoo_project.database.PlaylistContentProvider;
 import journey.forjobs.akazoo_project.database.TracksContentProvider;
@@ -72,16 +73,22 @@ public class AkazooController extends Service {
 
             @Override
             public void handleSuccess(GetPlaylistsResponse response) {
-                final ArrayList<Playlist> playlists = response.getResult();
-                for (Playlist playlist: playlists){
-                    ContentValues values = new ContentValues();
-                    values.put(DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID, playlist.getPlaylistId());
-                    values.put(DBTableHelper.COLUMN_PLAYLISTS_NAME, playlist.getName());
-                    values.put(DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT, playlist.getItemCount());
-                    values.put(DBTableHelper.COLUMN_PLAYLISTS_PHOTO_URL, playlist.getPhotoUrl());
-                    getContentResolver().insert(PlaylistContentProvider.CONTENT_URI, values);
+                if(response.getResult() != null && response.getResult().size() > 0){
+                    getContentResolver().delete(PlaylistContentProvider.CONTENT_URI, null, null);
+                    final ArrayList<Playlist> playlists = response.getResult();
+                    for (Playlist playlist: playlists){
+                        ContentValues values = new ContentValues();
+                        values.put(DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID, playlist.getPlaylistId());
+                        values.put(DBTableHelper.COLUMN_PLAYLISTS_NAME, playlist.getName());
+                        values.put(DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT, playlist.getItemCount());
+                        values.put(DBTableHelper.COLUMN_PLAYLISTS_PHOTO_URL, playlist.getPhotoUrl());
+                        getContentResolver().insert(PlaylistContentProvider.CONTENT_URI, values);
+                    }
+                    complection.onResponse();
+                }else {
+                    handleFailure(10, getString(R.string.playlists_error_message));
                 }
-                complection.onResponse();
+
             }
 
             @Override
@@ -118,9 +125,6 @@ public class AkazooController extends Service {
 
     }
 
-    public void test(){
-        Log.d("APPLICATION", "TEST");
-    }
 
     public interface TracksComplection {
         void onResponse(ArrayList<Track> complection);

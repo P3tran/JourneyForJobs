@@ -11,4 +11,5 @@
 
     <string name="transition_playlist_name">transition_playlist_name</string>
     <string name="generic_rest_error_message">Service is temporary unavailable</string>
+    <string name="playlists_error_message">No playlists found</string>
 </resources>

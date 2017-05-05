@@ -32,7 +32,7 @@ public abstract class RestCallback<T> implements Callback<T> {
         Log.i(Const.LOG_REST_TAG, "Generic success");
         T responseContent = (T) response.body();
         GenericResponse castingResponse = (GenericResponse) responseContent;
-        if (castingResponse.isError()){
+        if (castingResponse.isError() || castingResponse == null){
             handleFailure(castingResponse.getErrorId(), AkazooApplication.getmInstance().getResources().getString(R.string.generic_rest_error_message));
         }else {
             handleSuccess(responseContent);

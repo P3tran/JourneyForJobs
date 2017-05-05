@@ -182,7 +182,6 @@ public class PlaylistsActivity extends AkazooActivity {
 
         switch (itemId) {
             case R.id.action_refresh:
-                getContentResolver().delete(PlaylistContentProvider.CONTENT_URI, null, null);
                 mPlaylistsList.setAdapter(null);
                 mProgressBar.setVisibility(View.VISIBLE);
 
