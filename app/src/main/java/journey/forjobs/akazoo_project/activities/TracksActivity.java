@@ -42,7 +42,7 @@ public class TracksActivity extends AkazooActivity {
 
         //TODO use controller to get tracks for track id "768f797f-ce35-4515-b6d8-56dcf91b8253"
 
-        //TODO query database to get tracks and show them in the list
+        //TODO query database to get tracks and show them in the list (look Playlist Activity how to query database but query tracks array)
 
 /*        for (int i =0; i < 20 ; i++) {
             Track track = new Track();
