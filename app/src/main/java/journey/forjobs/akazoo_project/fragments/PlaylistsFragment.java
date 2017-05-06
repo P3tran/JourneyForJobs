@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import journey.forjobs.akazoo_project.BuildConfig;
 import journey.forjobs.akazoo_project.activities.AkazooActivity;
 import journey.forjobs.akazoo_project.activities.PlaylistsActivity;
 import journey.forjobs.akazoo_project.activities.TracksActivity;
@@ -33,6 +34,9 @@ import journey.forjobs.akazoo_project.utils.Const;
 
 
 public class PlaylistsFragment extends Fragment  {
+
+    public static final String FRAGMENT_TAG =
+            BuildConfig.APPLICATION_ID + ".DEBUG_EXAMPLE_TWO_FRAGMENT_TAG";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

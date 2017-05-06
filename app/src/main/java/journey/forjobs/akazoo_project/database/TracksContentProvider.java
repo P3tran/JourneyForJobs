@@ -180,7 +180,8 @@ public class TracksContentProvider extends ContentProvider {
         String[] available = { DBTableHelper.COLUMN_TRACKS_NAME,
                 DBTableHelper.COLUMN_ARTIST_NAME,
                 DBTableHelper.COLUMN_TRACKS_ID,
-                DBTableHelper.COLUMN_TRACKS_TRACK_ID};
+                DBTableHelper.COLUMN_TRACKS_TRACK_ID,
+                DBTableHelper.COLUMN_TRACKS_PHOTO_URL};
         if (projection != null) {
             HashSet<String> requestedColumns = new HashSet<String>(
                     Arrays.asList(projection));

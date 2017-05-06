@@ -57,22 +57,32 @@ public class AkazooController extends Service {
         }
     }
 
-    private void sendBroadcastMessage(String message) {
+    private void sendSuccessfulBroadcastMessage(String message) {
         Intent intent = new Intent(Const.CONTROLLER_SUCCESSFULL_CALLBACK);
         intent.putExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE, message);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 
+    private void sendFailureBroadcastMessage(String message){
+        Intent intent = new Intent(Const.CONTROLLER_FAILURE_CALLBACK);
+        intent.putExtra(Const.CONTROLLER_FAILURE_CALLBACK_MESSAGE, message);
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+    }
+
     public void fetchPlaylists(final PlaylistsComplection complection){
         Call<GetPlaylistsResponse> call = RestClient.call().getPlaylist();
-        call.enqueue(new RestCallback<GetPlaylistsResponse>() {
+
+        call.enqueue(new ControllerRestCallback<GetPlaylistsResponse>() {
+
             @Override
-            public void handleExeption(Throwable exception) {
-                exception.printStackTrace();
+            public void handleFailure(int statusCode, String statusMessage) {
+                super.handleFailure(statusCode, statusMessage);
             }
 
             @Override
             public void handleSuccess(GetPlaylistsResponse response) {
+                super.handleSuccess(response);
+
                 if(response.getResult() != null && response.getResult().size() > 0){
                     getContentResolver().delete(PlaylistContentProvider.CONTENT_URI, null, null);
                     final ArrayList<Playlist> playlists = response.getResult();
@@ -85,15 +95,10 @@ public class AkazooController extends Service {
                         getContentResolver().insert(PlaylistContentProvider.CONTENT_URI, values);
                     }
                     complection.onResponse();
+                    sendSuccessfulBroadcastMessage(Const.REST_PLAYLISTS_SUCCESS);
                 }else {
                     handleFailure(10, getString(R.string.playlists_error_message));
                 }
-
-            }
-
-            @Override
-            public void handleFailure(int statusCode, String statusMessage) {
-                Log.d(String.valueOf(statusCode),statusMessage);
             }
         });
     }
@@ -101,25 +106,34 @@ public class AkazooController extends Service {
     public void fetchTracks(String id , final TracksComplection complection){
 
         Call<GetTracksResponse> call = RestClient.call().getTracks(id);
-        call.enqueue(new RestCallback<GetTracksResponse>() {
-            @Override
-            public void handleExeption(Throwable exception) {
-                exception.printStackTrace();
-            }
+        call.enqueue(new ControllerRestCallback<GetTracksResponse>() {
 
             @Override
             public void handleSuccess(GetTracksResponse response) {
+                super.handleSuccess(response);
+                if(response.getResult() != null && response.getResult().getItems().size() > 0){
+                    getContentResolver().delete(TracksContentProvider.CONTENT_URI, null, null);
+                    final ArrayList<Track> tracks = response.getResult().getItems();
+                    for (Track track: tracks){
+                        ContentValues values = new ContentValues();
+                        values.put(DBTableHelper.COLUMN_TRACKS_TRACK_ID, track.getTrackId());
+                        values.put(DBTableHelper.COLUMN_TRACKS_NAME, track.getTrackName());
+                        values.put(DBTableHelper.COLUMN_TRACKS_ID, track.getTrackId());
+                        values.put(DBTableHelper.COLUMN_ARTIST_NAME, track.getArtistName());
+                        values.put(DBTableHelper.COLUMN_TRACKS_PHOTO_URL, track.getImageUrl());
+                        getContentResolver().insert(TracksContentProvider.CONTENT_URI, values);
+                    }
 
-                final Playlist playlist = response.getResult();
-                final ArrayList<Track> tracks = playlist.getItems();
-
-                complection.onResponse(tracks);
-
+                    complection.onResponse();
+                    sendSuccessfulBroadcastMessage(Const.REST_TRACKS_SUCCESS);
+                }else {
+                    handleFailure(10, getString(R.string.tracks_error_message));
+                }
             }
 
             @Override
             public void handleFailure(int statusCode, String statusMessage) {
-                Log.d(String.valueOf(statusCode),statusMessage);
+                super.handleFailure(statusCode, statusMessage);
             }
         });
 
@@ -127,11 +141,31 @@ public class AkazooController extends Service {
 
 
     public interface TracksComplection {
-        void onResponse(ArrayList<Track> complection);
+        void onResponse();
     }
 
     public interface PlaylistsComplection {
         void onResponse();
+    }
+
+
+
+    public abstract class ControllerRestCallback<T> extends RestCallback<T> {
+
+        @Override
+        public void handleExeption() {
+            sendFailureBroadcastMessage(Const.REST_SERVICE_DOWN);
+        }
+
+        @Override
+        public void handleFailure(int statusCode, String statusMessage) {
+            sendFailureBroadcastMessage(statusMessage);
+        }
+
+        @Override
+        public void handleSuccess(T response) {
+
+        }
     }
 
 }

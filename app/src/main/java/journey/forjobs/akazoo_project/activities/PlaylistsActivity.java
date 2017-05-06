@@ -1,5 +1,6 @@
 package journey.forjobs.akazoo_project.activities;
 
+import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,12 +10,15 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.MediaStore;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -65,6 +69,12 @@ public class PlaylistsActivity extends AkazooActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlists);
         ButterKnife.inject(this);
+
+//        if (savedInstanceState == null) {
+//            Fragment newFragment = new PlaylistsFragment();
+//            FragmentTransaction ft = getFragmentManager().beginTransaction();
+//            ft.add(, newFragment).commit();
+//        }
 
         mProgressBar.setVisibility(View.VISIBLE);
 

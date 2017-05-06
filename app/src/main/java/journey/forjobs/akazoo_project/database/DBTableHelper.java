@@ -35,6 +35,7 @@ public class DBTableHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TRACKS_NAME = "track_name";
     public static final String COLUMN_ARTIST_NAME = "artist_name";
     public static final String COLUMN_TRACKS_TRACK_ID = "track_id";
+    public static final String COLUMN_TRACKS_PHOTO_URL = "track_photo_url";
 
     //SQL statement to create table users
     private static final String CREATE_TABLE_PLAYLISTS = "create table " + TABLE_PLAYLISTS + "(" + COLUMN_PLAYLISTS_ID + " integer primary key autoincrement, " + COLUMN_PLAYLISTS_NAME + " text, " + COLUMN_PLAYLISTS_TRACK_COUNT
@@ -42,7 +43,7 @@ public class DBTableHelper extends SQLiteOpenHelper {
 
     //SQL statement to create table tracks
     private static final String CREATE_TABLE_TRACKS = "create table " + TABLE_TRACKS + "(" + COLUMN_TRACKS_ID + " integer primary key autoincrement, " + COLUMN_TRACKS_NAME + " text, " + COLUMN_ARTIST_NAME
-            + " text, " + COLUMN_TRACKS_TRACK_ID + " text" + ");";
+            + " text, " + COLUMN_TRACKS_PHOTO_URL + " text, " + COLUMN_TRACKS_TRACK_ID + " text" + ");";
 
     @Override
     public void onCreate(SQLiteDatabase db) {

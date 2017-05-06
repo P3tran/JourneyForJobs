@@ -28,15 +28,15 @@ import butterknife.InjectView;
 import journey.forjobs.akazoo_project.R;
 import journey.forjobs.akazoo_project.controllers.AkazooController;
 import journey.forjobs.akazoo_project.database.DBTableHelper;
-import journey.forjobs.akazoo_project.database.PlaylistContentProvider;
+
 import journey.forjobs.akazoo_project.database.TracksContentProvider;
-import journey.forjobs.akazoo_project.listAdapters.PlaylistListAdapter;
+
 import journey.forjobs.akazoo_project.listAdapters.TracksListAdapter;
-import journey.forjobs.akazoo_project.model.Playlist;
+
 import journey.forjobs.akazoo_project.model.Track;
 import journey.forjobs.akazoo_project.rest.RestCallback;
 import journey.forjobs.akazoo_project.rest.RestClient;
-import journey.forjobs.akazoo_project.rest.pojos.GetPlaylistsResponse;
+
 import journey.forjobs.akazoo_project.rest.pojos.GetTracksResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -73,8 +73,8 @@ public class TracksActivity extends AkazooActivity {
 
         getAkazooController().fetchTracks(id, new AkazooController.TracksComplection() {
             @Override
-            public void onResponse(ArrayList<Track> tracks) {
-                final TracksListAdapter mTracksListAdapter = new TracksListAdapter(TracksActivity.this, tracks);
+            public void onResponse() {
+                final TracksListAdapter mTracksListAdapter = new TracksListAdapter(TracksActivity.this, fetchTracksFromDB());
                 mTracksList.setAdapter(mTracksListAdapter);
             }
         });
@@ -83,6 +83,60 @@ public class TracksActivity extends AkazooActivity {
     protected void showSnackBar(String message){
         Snackbar mSnackBar = Snackbar.make(findViewById(R.id.root), message, Snackbar.LENGTH_LONG);
         mSnackBar.show();
+    }
+
+    public ArrayList<Track> fetchTracksFromDB(){
+
+        ArrayList<Track> tracks = new ArrayList<Track>();
+        Cursor mCursor;
+
+        String[] mProjection = {
+                DBTableHelper.COLUMN_TRACKS_TRACK_ID,
+                DBTableHelper.COLUMN_TRACKS_NAME,
+                DBTableHelper.COLUMN_ARTIST_NAME,
+                DBTableHelper.COLUMN_TRACKS_ID,
+                DBTableHelper.COLUMN_TRACKS_PHOTO_URL
+        };
+
+        mCursor = getContentResolver().query(
+                TracksContentProvider.CONTENT_URI,
+                mProjection,
+                null,
+                null,
+                null);
+
+        if (mCursor != null) {
+            while (mCursor.moveToNext()) {
+
+                Track track = new Track();
+
+                String tracksNameRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_TRACKS_NAME));
+
+                int tracksIdRetrievedFromDatabase = mCursor.getInt(mCursor.getColumnIndex(DBTableHelper.COLUMN_TRACKS_ID));
+
+                String artistsNameRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_ARTIST_NAME));
+
+                String tracksPhotoUrlRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_TRACKS_PHOTO_URL));
+
+                track.setTrackName(tracksNameRetrievedFromDatabase);
+
+                track.setTrackId(tracksIdRetrievedFromDatabase);
+
+                track.setArtistName(artistsNameRetrievedFromDatabase);
+
+                track.setImageUrl(tracksPhotoUrlRetrievedFromDatabase);
+
+                tracks.add(track);
+
+            }
+        }
+
+        if (mCursor.getCount() > 0){
+            return tracks;
+        }else {
+            return null;
+        }
+
     }
 
 }

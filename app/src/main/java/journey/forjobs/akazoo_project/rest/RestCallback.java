@@ -24,7 +24,8 @@ public abstract class RestCallback<T> implements Callback<T> {
 
     @Override
     public void onFailure(Call<T> call, Throwable t) {
-        handleExeption(t);
+        handleExeption();
+        t.printStackTrace();
     }
 
     @Override
@@ -39,7 +40,7 @@ public abstract class RestCallback<T> implements Callback<T> {
         }
     }
 
-    public abstract void handleExeption(Throwable exception);
+    public abstract void handleExeption();
 
     public abstract void handleSuccess(T response);
 
