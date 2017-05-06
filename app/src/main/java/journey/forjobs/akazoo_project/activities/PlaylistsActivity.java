@@ -36,10 +36,12 @@ import journey.forjobs.akazoo_project.database.PlaylistContentProvider;
 import journey.forjobs.akazoo_project.fragments.PlaylistsFragment;
 import journey.forjobs.akazoo_project.R;
 import journey.forjobs.akazoo_project.listAdapters.PlaylistListAdapter;
+import journey.forjobs.akazoo_project.listAdapters.TracksListAdapter;
 import journey.forjobs.akazoo_project.model.Playlist;
 import journey.forjobs.akazoo_project.model.Track;
 import journey.forjobs.akazoo_project.rest.RestClient;
 import journey.forjobs.akazoo_project.rest.pojos.GetPlaylistsResponse;
+import journey.forjobs.akazoo_project.utils.Const;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,6 +58,13 @@ public class PlaylistsActivity extends AkazooActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             super.onReceive(context, intent);
+
+            String msg = intent.getStringExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE);
+            Log.d("RECEIVER TEST", msg);
+            if (msg == Const.REST_PLAYLISTS_SUCCESS){
+                setUpPlaylistsListAdapter();
+            }
+
         }
     };
 
@@ -78,24 +87,25 @@ public class PlaylistsActivity extends AkazooActivity {
 
         mProgressBar.setVisibility(View.VISIBLE);
 
-        if (fetchPlaylistsFromDB() == null){
-            //fetchPlaylists();
-        }
-        else {
-            final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
-            mPlaylistsList.setAdapter(mPlaylistListAdapter);
-            mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        setUpPlaylistsListAdapter();
 
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(PlaylistsActivity.this, TracksActivity.class);
-                    intent.putExtra("id", mPlaylistListAdapter.getItem(position).getPlaylistId());
-                    startActivity(intent);
-                }
+    }
 
-            });
-            mProgressBar.setVisibility(View.INVISIBLE);
-        }
+    public void setUpPlaylistsListAdapter(){
+
+        final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
+        mPlaylistsList.setAdapter(mPlaylistListAdapter);
+        mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(PlaylistsActivity.this, TracksActivity.class);
+                intent.putExtra("id", mPlaylistListAdapter.getItem(position).getPlaylistId());
+                startActivity(intent);
+            }
+
+        });
+        mProgressBar.setVisibility(View.INVISIBLE);
 
     }
 
@@ -104,28 +114,6 @@ public class PlaylistsActivity extends AkazooActivity {
         mSnackBar.show();
     }
 
-    public void fetchPlaylists(){
-
-        getAkazooController().fetchPlaylists(new AkazooController.PlaylistsComplection() {
-            @Override
-            public void onResponse() {
-                final PlaylistListAdapter mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, fetchPlaylistsFromDB());
-                mPlaylistsList.setAdapter(mPlaylistListAdapter);
-                mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Intent intent = new Intent(PlaylistsActivity.this, TracksActivity.class);
-                        intent.putExtra("id", mPlaylistListAdapter.getItem(position).getPlaylistId());
-                        startActivity(intent);
-                    }
-
-                });
-
-                mProgressBar.setVisibility(View.INVISIBLE);
-            }
-        });
-    }
 
     public ArrayList<Playlist> fetchPlaylistsFromDB(){
 
@@ -195,7 +183,7 @@ public class PlaylistsActivity extends AkazooActivity {
                 mPlaylistsList.setAdapter(null);
                 mProgressBar.setVisibility(View.VISIBLE);
 
-                fetchPlaylists();
+                getAkazooController().fetchPlaylists();
 
                 return true;
         }

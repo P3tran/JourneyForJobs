@@ -69,7 +69,7 @@ public class AkazooController extends Service {
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 
-    public void fetchPlaylists(final PlaylistsComplection complection){
+    public void fetchPlaylists(){
         Call<GetPlaylistsResponse> call = RestClient.call().getPlaylist();
 
         call.enqueue(new ControllerRestCallback<GetPlaylistsResponse>() {
@@ -94,7 +94,6 @@ public class AkazooController extends Service {
                         values.put(DBTableHelper.COLUMN_PLAYLISTS_PHOTO_URL, playlist.getPhotoUrl());
                         getContentResolver().insert(PlaylistContentProvider.CONTENT_URI, values);
                     }
-                    complection.onResponse();
                     sendSuccessfulBroadcastMessage(Const.REST_PLAYLISTS_SUCCESS);
                 }else {
                     handleFailure(10, getString(R.string.playlists_error_message));
@@ -103,7 +102,7 @@ public class AkazooController extends Service {
         });
     }
 
-    public void fetchTracks(String id , final TracksComplection complection){
+    public void fetchTracks(String id ){
 
         Call<GetTracksResponse> call = RestClient.call().getTracks(id);
         call.enqueue(new ControllerRestCallback<GetTracksResponse>() {
@@ -118,13 +117,11 @@ public class AkazooController extends Service {
                         ContentValues values = new ContentValues();
                         values.put(DBTableHelper.COLUMN_TRACKS_TRACK_ID, track.getTrackId());
                         values.put(DBTableHelper.COLUMN_TRACKS_NAME, track.getTrackName());
-                        values.put(DBTableHelper.COLUMN_TRACKS_ID, track.getTrackId());
                         values.put(DBTableHelper.COLUMN_ARTIST_NAME, track.getArtistName());
                         values.put(DBTableHelper.COLUMN_TRACKS_PHOTO_URL, track.getImageUrl());
                         getContentResolver().insert(TracksContentProvider.CONTENT_URI, values);
                     }
 
-                    complection.onResponse();
                     sendSuccessfulBroadcastMessage(Const.REST_TRACKS_SUCCESS);
                 }else {
                     handleFailure(10, getString(R.string.tracks_error_message));
@@ -138,17 +135,6 @@ public class AkazooController extends Service {
         });
 
     }
-
-
-    public interface TracksComplection {
-        void onResponse();
-    }
-
-    public interface PlaylistsComplection {
-        void onResponse();
-    }
-
-
 
     public abstract class ControllerRestCallback<T> extends RestCallback<T> {
 

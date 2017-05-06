@@ -23,6 +23,7 @@ public abstract class AkazooActivity extends AppCompatActivity {
         //method that will be called when a broadcast message is received
         @Override
         public void onReceive(Context context, Intent intent) {
+
         }
     }
 

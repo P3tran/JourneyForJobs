@@ -38,6 +38,7 @@ import journey.forjobs.akazoo_project.rest.RestCallback;
 import journey.forjobs.akazoo_project.rest.RestClient;
 
 import journey.forjobs.akazoo_project.rest.pojos.GetTracksResponse;
+import journey.forjobs.akazoo_project.utils.Const;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,6 +55,13 @@ public class TracksActivity extends AkazooActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             super.onReceive(context, intent);
+
+            String msg = intent.getStringExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE);
+            Log.d("RECEIVER TEST", msg);
+            if (msg == Const.REST_TRACKS_SUCCESS){
+                final TracksListAdapter mTracksListAdapter = new TracksListAdapter(TracksActivity.this, fetchTracksFromDB());
+                mTracksList.setAdapter(mTracksListAdapter);
+            }
         }
     };
 
@@ -71,13 +79,8 @@ public class TracksActivity extends AkazooActivity {
         Intent intent = getIntent();
         id  = intent.getExtras().getString("id");
 
-        getAkazooController().fetchTracks(id, new AkazooController.TracksComplection() {
-            @Override
-            public void onResponse() {
-                final TracksListAdapter mTracksListAdapter = new TracksListAdapter(TracksActivity.this, fetchTracksFromDB());
-                mTracksList.setAdapter(mTracksListAdapter);
-            }
-        });
+        getAkazooController().fetchTracks(id);
+
     }
 
     protected void showSnackBar(String message){

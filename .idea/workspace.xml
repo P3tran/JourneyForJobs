@@ -11,15 +11,11 @@
   <component name="ChangeListManager">
     <list default="true" id="dc726d6b-5f90-418b-abaf-6172d8b11f5a" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/AkazooActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/AkazooActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/PlaylistsActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/PlaylistsActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/TracksActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/TracksActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/controllers/AkazooController.java" afterPath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/controllers/AkazooController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/database/DBTableHelper.java" afterPath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/database/DBTableHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/database/TracksContentProvider.java" afterPath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/database/TracksContentProvider.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/fragments/PlaylistsFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/fragments/PlaylistsFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/rest/RestCallback.java" afterPath="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/rest/RestCallback.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_playlists.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_playlists.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
     </list>
     <ignored path="akazoo_project_1.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -51,7 +47,18 @@
     <favorites_list name="akazoo_project_1" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="AkazooController.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/controllers/AkazooController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1440">
+              <caret line="136" column="5" selection-start-line="136" selection-start-column="5" selection-end-line="136" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -1809,7 +1816,6 @@
         <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/rest/RestAPI.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/rest/RestClient.java" />
         <option value="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/AkazooActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/application/AkazooApplication.java" />
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/database/PlaylistContentProvider.java" />
@@ -1822,12 +1828,13 @@
         <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/rest/RestCallback.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_playlists.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/fragments/PlaylistsFragment.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/PlaylistsActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/database/DBTableHelper.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/database/TracksContentProvider.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/controllers/AkazooController.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/AkazooActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/TracksActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/PlaylistsActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/controllers/AkazooController.java" />
       </list>
     </option>
   </component>
@@ -1861,6 +1868,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="Scope">
         <subPane subId="Project Files">
           <PATH>
@@ -1881,8 +1889,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="ProjectPane" />
+      <pane id="Scratches" />
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -1890,10 +1897,6 @@
               <option name="myItemId" value="JourneyForJobs" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Gradle Scripts" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidBuildScriptsGroupNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -1903,46 +1906,6 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="app" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="values" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JourneyForJobs" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="JourneyForJobs" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="res" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="layout" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidResFolderTypeNode" />
             </PATH_ELEMENT>
           </PATH>
           <PATH>
@@ -2279,7 +2242,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="ProjectPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2834,7 +2797,14 @@
       <option name="project" value="LOCAL" />
       <updated>1493998568544</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="General improvments">
+      <created>1494053968500</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1494053968500</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2953,11 +2923,12 @@
     <MESSAGE value="Loads image to listViews" />
     <MESSAGE value="isError catch" />
     <MESSAGE value="Error catch in controller" />
-    <option name="LAST_COMMIT_MESSAGE" value="Error catch in controller" />
+    <MESSAGE value="General improvments" />
+    <option name="LAST_COMMIT_MESSAGE" value="General improvments" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="31" />
+      <option name="time" value="32" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -3052,13 +3023,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/model/Track.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/main.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
@@ -3104,7 +3068,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3160,17 +3123,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/model/Playlist.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="612">
-          <caret line="117" column="31" selection-start-line="117" selection-start-column="21" selection-end-line="117" selection-end-column="31" />
-          <folding>
-            <element signature="e#2449#2450#0" expanded="false" />
-            <element signature="e#2482#2483#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/rest/RestAPI.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="300">
@@ -3183,7 +3135,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
           <caret line="17" column="39" selection-start-line="17" selection-start-column="4" selection-end-line="17" selection-end-column="39" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3199,7 +3150,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3237,14 +3187,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/AkazooActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="27" column="0" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/application/AkazooApplication.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
@@ -3269,30 +3211,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/database/TracksContentProvider.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1191">
-          <caret line="186" column="47" selection-start-line="186" selection-start-column="47" selection-end-line="186" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/listAdapters/TracksListAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="282">
-          <caret line="41" column="13" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/controllers/AkazooController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="915">
-          <caret line="101" column="13" selection-start-line="101" selection-start-column="13" selection-end-line="101" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/database/DBTableHelper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="552">
@@ -3301,21 +3219,72 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/model/Track.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="35" selection-start-line="9" selection-start-column="35" selection-end-line="9" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/model/Playlist.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1035">
+          <caret line="117" column="31" selection-start-line="117" selection-start-column="21" selection-end-line="117" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/database/TracksContentProvider.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="98" column="0" selection-start-line="98" selection-start-column="0" selection-end-line="98" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/TracksActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="71" column="49" selection-start-line="71" selection-start-column="49" selection-end-line="71" selection-end-column="49" />
+        <state relative-caret-position="240">
+          <caret line="58" column="12" selection-start-line="58" selection-start-column="12" selection-end-line="63" selection-end-column="13" />
           <folding>
-            <element signature="e#2198#2511#0" expanded="true" />
-            <element signature="e#2510#2511#0" expanded="true" />
+            <element signature="e#1633#2190#0" expanded="true" />
+            <element signature="e#2189#2190#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/AkazooActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12">
+          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/activities/PlaylistsActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="96" column="55" selection-start-line="96" selection-start-column="12" selection-end-line="96" selection-end-column="55" />
+        <state relative-caret-position="315">
+          <caret line="65" column="13" selection-start-line="65" selection-start-column="13" selection-end-line="65" selection-end-column="13" />
+          <folding>
+            <element signature="e#2053#2473#0" expanded="true" />
+            <element signature="e#2472#2473#0" expanded="true" />
+            <element signature="e#3409#3815#0" expanded="true" />
+            <element signature="e#3814#3815#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/listAdapters/TracksListAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="41" column="13" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/journey/forjobs/akazoo_project/controllers/AkazooController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1440">
+          <caret line="136" column="5" selection-start-line="136" selection-start-column="5" selection-end-line="136" selection-end-column="5" />
           <folding />
         </state>
       </provider>
