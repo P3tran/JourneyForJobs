@@ -14,13 +14,17 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -45,6 +49,7 @@ import journey.forjobs.akazoo_project.utils.Const;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import android.view.ViewGroup.LayoutParams;
 
 public class PlaylistsActivity extends AkazooActivity {
 
@@ -59,11 +64,7 @@ public class PlaylistsActivity extends AkazooActivity {
         public void onReceive(Context context, Intent intent) {
             super.onReceive(context, intent);
 
-            String msg = intent.getStringExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE);
-            Log.d("RECEIVER TEST", msg);
-            if (msg == Const.REST_PLAYLISTS_SUCCESS){
-                setUpPlaylistsListAdapter();
-            }
+            setUpPlaylistsListAdapter();
 
         }
     };

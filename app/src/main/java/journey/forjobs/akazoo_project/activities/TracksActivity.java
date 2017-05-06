@@ -56,12 +56,8 @@ public class TracksActivity extends AkazooActivity {
         public void onReceive(Context context, Intent intent) {
             super.onReceive(context, intent);
 
-            String msg = intent.getStringExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE);
-            Log.d("RECEIVER TEST", msg);
-            if (msg == Const.REST_TRACKS_SUCCESS){
-                final TracksListAdapter mTracksListAdapter = new TracksListAdapter(TracksActivity.this, fetchTracksFromDB());
-                mTracksList.setAdapter(mTracksListAdapter);
-            }
+            final TracksListAdapter mTracksListAdapter = new TracksListAdapter(TracksActivity.this, fetchTracksFromDB());
+            mTracksList.setAdapter(mTracksListAdapter);
         }
     };
 
