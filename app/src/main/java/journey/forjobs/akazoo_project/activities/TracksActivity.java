@@ -40,13 +40,17 @@ public class TracksActivity extends AkazooActivity {
         ButterKnife.inject(this);
         ArrayList<Track> allTracks = new ArrayList<Track>();
 
-        for (int i =0; i < 20 ; i++) {
+        //TODO use controller to get tracks for track id "768f797f-ce35-4515-b6d8-56dcf91b8253"
+
+        //TODO query database to get tracks and show them in the list
+
+/*        for (int i =0; i < 20 ; i++) {
             Track track = new Track();
             track.setArtistName("artist" + i);
             track.setTrackName("track" + i);
             track.setTrackId(i);
             allTracks.add(track);
-        }
+        }*/
         final TracksListAdapter mTracksListAdapter = new TracksListAdapter(this, allTracks);
         mTracksList.setAdapter(mTracksListAdapter);
 

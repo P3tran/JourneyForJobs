@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/home/petros/Projects/JourneyForJobs/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="654cea6a3f7db3607a9735eb2e3de10f76d5f1e3">
+        <dex dex="/home/petros/Projects/JourneyForJobs/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_4f2f355433005eca056e17d308d881ab3d6884df/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/petros/Projects/JourneyForJobs/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.0"
+        sha1="510aa6efc159983dfbffa676a0dae37568c0a46f">
+        <dex dex="/home/petros/Projects/JourneyForJobs/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_78f837deb4d4216a889d1d86c83eed23e2b94769/classes.dex" />
+    </item>
+
+</items>
