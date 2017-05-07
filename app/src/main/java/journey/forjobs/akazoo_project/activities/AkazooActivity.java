@@ -1,9 +1,11 @@
 package journey.forjobs.akazoo_project.activities;
 
+import android.app.LoaderManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
@@ -19,7 +21,7 @@ import journey.forjobs.akazoo_project.controllers.AkazooController;
 import journey.forjobs.akazoo_project.utils.Const;
 
 
-public abstract class AkazooActivity extends AppCompatActivity {
+public abstract class AkazooActivity extends AppCompatActivity{
 
 
 
@@ -36,6 +38,9 @@ public abstract class AkazooActivity extends AppCompatActivity {
                     break;
                 case Const.CONTROLLER_SUCCESSFULL_CALLBACK:
                     Log.d("REST SUCCESS", intent.getStringExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE));
+                    break;
+                case "SERVICE_BIND":
+                    Log.d("SERVICE", "SERVICE_BINDED_SUCCESSFULLY");
                     break;
             }
         }
@@ -56,6 +61,8 @@ public abstract class AkazooActivity extends AppCompatActivity {
                 new IntentFilter(Const.CONTROLLER_SUCCESSFULL_CALLBACK));
         LocalBroadcastManager.getInstance(this).registerReceiver(getmMessageReceiver(),
                 new IntentFilter(Const.CONTROLLER_FAILURE_CALLBACK));
+        LocalBroadcastManager.getInstance(this).registerReceiver(getmMessageReceiver(),
+                new IntentFilter("SERVICE_BIND"));
     }
 
     @Override

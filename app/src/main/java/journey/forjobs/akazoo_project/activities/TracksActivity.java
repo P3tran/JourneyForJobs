@@ -1,9 +1,12 @@
 package journey.forjobs.akazoo_project.activities;
 
+import android.app.LoaderManager;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.CursorLoader;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.ServiceConnection;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -14,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -29,10 +33,12 @@ import journey.forjobs.akazoo_project.R;
 import journey.forjobs.akazoo_project.controllers.AkazooController;
 import journey.forjobs.akazoo_project.database.DBTableHelper;
 
+import journey.forjobs.akazoo_project.database.PlaylistContentProvider;
 import journey.forjobs.akazoo_project.database.TracksContentProvider;
 
 import journey.forjobs.akazoo_project.listAdapters.TracksListAdapter;
 
+import journey.forjobs.akazoo_project.model.Playlist;
 import journey.forjobs.akazoo_project.model.Track;
 import journey.forjobs.akazoo_project.rest.RestCallback;
 import journey.forjobs.akazoo_project.rest.RestClient;
@@ -44,20 +50,28 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TracksActivity extends AkazooActivity {
+public class TracksActivity extends AkazooActivity implements LoaderManager.LoaderCallbacks<Cursor>{
 
     @InjectView(R.id.tracks_list)
     ListView mTracksList;
 
-    String id;
+    @InjectView(R.id.pb_loader)
+    ProgressBar mProgressBar;
+
+    TracksListAdapter mTracksListAdapter;
+    ArrayList<Track> tracks = new ArrayList<Track>();
+
 
     private MyMessageReceiver mMessageReceiver = new MyMessageReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             super.onReceive(context, intent);
 
-            final TracksListAdapter mTracksListAdapter = new TracksListAdapter(TracksActivity.this, fetchTracksFromDB());
-            mTracksList.setAdapter(mTracksListAdapter);
+            tracks.clear();
+            mTracksListAdapter.notifyDataSetChanged();
+
+            setupTracksListAdapter();
+
         }
     };
 
@@ -72,10 +86,27 @@ public class TracksActivity extends AkazooActivity {
         setContentView(R.layout.activity_tracks);
         ButterKnife.inject(this);
 
+        mProgressBar.setVisibility(View.VISIBLE);
+
         Intent intent = getIntent();
-        id  = intent.getExtras().getString("id");
+        String id = intent.getStringExtra(Const.INTENT_SELECTED_PLAYLIST);
 
         getAkazooController().fetchTracks(id);
+
+        getLoaderManager().initLoader(0,null,this);
+
+        setupTracksListAdapter();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+//        Intent intent = getIntent();
+//        String id = intent.getStringExtra(Const.INTENT_SELECTED_PLAYLIST);
+//
+//        getAkazooController().fetchTracks(id);
 
     }
 
@@ -84,10 +115,9 @@ public class TracksActivity extends AkazooActivity {
         mSnackBar.show();
     }
 
-    public ArrayList<Track> fetchTracksFromDB(){
 
-        ArrayList<Track> tracks = new ArrayList<Track>();
-        Cursor mCursor;
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 
         String[] mProjection = {
                 DBTableHelper.COLUMN_TRACKS_TRACK_ID,
@@ -97,14 +127,19 @@ public class TracksActivity extends AkazooActivity {
                 DBTableHelper.COLUMN_TRACKS_PHOTO_URL
         };
 
-        mCursor = getContentResolver().query(
-                TracksContentProvider.CONTENT_URI,
-                mProjection,
-                null,
-                null,
-                null);
+        if (id == 0) {
+            return new CursorLoader(TracksActivity.this, TracksContentProvider.CONTENT_URI, mProjection, null, null, null);
+        }
+        return null;
+    }
 
-        if (mCursor != null) {
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor mCursor) {
+
+        ArrayList<Track> mTracks = new ArrayList<>();
+
+        if (mCursor != null && mCursor.getCount() > 0) {
+            //cursor.moveToFirst();
             while (mCursor.moveToNext()) {
 
                 Track track = new Track();
@@ -125,17 +160,26 @@ public class TracksActivity extends AkazooActivity {
 
                 track.setImageUrl(tracksPhotoUrlRetrievedFromDatabase);
 
-                tracks.add(track);
+                mTracks.add(track);
 
             }
+
         }
 
-        if (mCursor.getCount() > 0){
-            return tracks;
-        }else {
-            return null;
-        }
+        tracks = mTracks;
+        mTracksListAdapter.notifyDataSetChanged();
+        setupTracksListAdapter();
 
     }
 
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        tracks.clear();
+        mTracksListAdapter.notifyDataSetChanged();
+    }
+
+    public void setupTracksListAdapter(){
+        mTracksListAdapter = new TracksListAdapter(TracksActivity.this, tracks);
+        mTracksList.setAdapter(mTracksListAdapter);
+    }
 }

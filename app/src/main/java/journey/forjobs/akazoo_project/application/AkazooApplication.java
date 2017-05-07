@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +15,7 @@ import journey.forjobs.akazoo_project.activities.PlaylistsActivity;
 import journey.forjobs.akazoo_project.activities.TracksActivity;
 import journey.forjobs.akazoo_project.controllers.AkazooController;
 import journey.forjobs.akazoo_project.listAdapters.PlaylistListAdapter;
+import journey.forjobs.akazoo_project.utils.Const;
 
 public class AkazooApplication extends Application {
 
@@ -25,8 +27,8 @@ public class AkazooApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Intent intent = new Intent(getApplicationContext(), AkazooController.class);
-        getApplicationContext().bindService(intent,serviceConnection, getApplicationContext().BIND_AUTO_CREATE);
+        Intent intent = new Intent(this, AkazooController.class);
+        bindService(intent,serviceConnection, BIND_AUTO_CREATE);
 
     }
 
@@ -37,11 +39,15 @@ public class AkazooApplication extends Application {
             mController = binder.getServerInstance();
             status = true;
 
-            Log.d("APPLICATIOM", "SERVICE BIND");
+            Intent intent = new Intent("SERVICE_BIND");
+            intent.putExtra("SERVICE_SUCCESSFUL_MESSAGE", "SERVICE_BINDED_SUCCESSFULLY");
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
+            mController = null;
             status = false;
         }
     };

@@ -115,7 +115,7 @@ public class AkazooController extends Service {
                     final ArrayList<Track> tracks = response.getResult().getItems();
                     for (Track track: tracks){
                         ContentValues values = new ContentValues();
-                        values.put(DBTableHelper.COLUMN_TRACKS_TRACK_ID, track.getTrackId());
+                        values.put(DBTableHelper.COLUMN_TRACKS_ID, track.getTrackId());
                         values.put(DBTableHelper.COLUMN_TRACKS_NAME, track.getTrackName());
                         values.put(DBTableHelper.COLUMN_ARTIST_NAME, track.getArtistName());
                         values.put(DBTableHelper.COLUMN_TRACKS_PHOTO_URL, track.getImageUrl());

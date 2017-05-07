@@ -21,4 +21,10 @@
         android:visibility="invisible"
         android:layout_gravity="center"/>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_container">
+    </FrameLayout>
+
 </android.support.design.widget.CoordinatorLayout>

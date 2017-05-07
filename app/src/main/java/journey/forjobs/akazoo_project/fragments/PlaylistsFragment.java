@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -35,8 +35,6 @@ import journey.forjobs.akazoo_project.utils.Const;
 
 public class PlaylistsFragment extends Fragment  {
 
-    public static final String FRAGMENT_TAG =
-            BuildConfig.APPLICATION_ID + ".DEBUG_EXAMPLE_TWO_FRAGMENT_TAG";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
