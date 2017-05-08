@@ -1,5 +1,7 @@
 package journey.forjobs.akazoo_project.activities;
 
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.LoaderManager;
 import android.content.ComponentName;
 import android.content.ContentValues;
@@ -36,6 +38,8 @@ import journey.forjobs.akazoo_project.database.DBTableHelper;
 import journey.forjobs.akazoo_project.database.PlaylistContentProvider;
 import journey.forjobs.akazoo_project.database.TracksContentProvider;
 
+import journey.forjobs.akazoo_project.fragments.PlaylistsFragment;
+import journey.forjobs.akazoo_project.fragments.TracksFragment;
 import journey.forjobs.akazoo_project.listAdapters.TracksListAdapter;
 
 import journey.forjobs.akazoo_project.model.Playlist;
@@ -50,16 +54,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TracksActivity extends AkazooActivity implements LoaderManager.LoaderCallbacks<Cursor>{
-
-    @InjectView(R.id.tracks_list)
-    ListView mTracksList;
-
-    @InjectView(R.id.pb_loader)
-    ProgressBar mProgressBar;
-
-    TracksListAdapter mTracksListAdapter;
-    ArrayList<Track> tracks = new ArrayList<Track>();
+public class TracksActivity extends AkazooActivity {
 
 
     private MyMessageReceiver mMessageReceiver = new MyMessageReceiver() {
@@ -67,10 +62,12 @@ public class TracksActivity extends AkazooActivity implements LoaderManager.Load
         public void onReceive(Context context, Intent intent) {
             super.onReceive(context, intent);
 
-            tracks.clear();
-            mTracksListAdapter.notifyDataSetChanged();
+            if(intent.getStringExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE) == Const.REST_TRACKS_SUCCESS){
 
-            setupTracksListAdapter();
+                Fragment newFragment = new TracksFragment();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_tracks_container,newFragment).commit();
+            }
 
         }
     };
@@ -86,100 +83,14 @@ public class TracksActivity extends AkazooActivity implements LoaderManager.Load
         setContentView(R.layout.activity_tracks);
         ButterKnife.inject(this);
 
-        mProgressBar.setVisibility(View.VISIBLE);
-
         Intent intent = getIntent();
         String id = intent.getStringExtra(Const.INTENT_SELECTED_PLAYLIST);
 
         getAkazooController().fetchTracks(id);
 
-        getLoaderManager().initLoader(0,null,this);
-
-        setupTracksListAdapter();
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-//        Intent intent = getIntent();
-//        String id = intent.getStringExtra(Const.INTENT_SELECTED_PLAYLIST);
-//
-//        getAkazooController().fetchTracks(id);
-
-    }
-
-    protected void showSnackBar(String message){
-        Snackbar mSnackBar = Snackbar.make(findViewById(R.id.root), message, Snackbar.LENGTH_LONG);
-        mSnackBar.show();
-    }
 
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        String[] mProjection = {
-                DBTableHelper.COLUMN_TRACKS_TRACK_ID,
-                DBTableHelper.COLUMN_TRACKS_NAME,
-                DBTableHelper.COLUMN_ARTIST_NAME,
-                DBTableHelper.COLUMN_TRACKS_ID,
-                DBTableHelper.COLUMN_TRACKS_PHOTO_URL
-        };
-
-        if (id == 0) {
-            return new CursorLoader(TracksActivity.this, TracksContentProvider.CONTENT_URI, mProjection, null, null, null);
-        }
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor mCursor) {
-
-        ArrayList<Track> mTracks = new ArrayList<>();
-
-        if (mCursor != null && mCursor.getCount() > 0) {
-            //cursor.moveToFirst();
-            while (mCursor.moveToNext()) {
-
-                Track track = new Track();
-
-                String tracksNameRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_TRACKS_NAME));
-
-                int tracksIdRetrievedFromDatabase = mCursor.getInt(mCursor.getColumnIndex(DBTableHelper.COLUMN_TRACKS_ID));
-
-                String artistsNameRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_ARTIST_NAME));
-
-                String tracksPhotoUrlRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_TRACKS_PHOTO_URL));
-
-                track.setTrackName(tracksNameRetrievedFromDatabase);
-
-                track.setTrackId(tracksIdRetrievedFromDatabase);
-
-                track.setArtistName(artistsNameRetrievedFromDatabase);
-
-                track.setImageUrl(tracksPhotoUrlRetrievedFromDatabase);
-
-                mTracks.add(track);
-
-            }
-
-        }
-
-        tracks = mTracks;
-        mTracksListAdapter.notifyDataSetChanged();
-        setupTracksListAdapter();
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        tracks.clear();
-        mTracksListAdapter.notifyDataSetChanged();
-    }
-
-    public void setupTracksListAdapter(){
-        mTracksListAdapter = new TracksListAdapter(TracksActivity.this, tracks);
-        mTracksList.setAdapter(mTracksListAdapter);
-    }
 }

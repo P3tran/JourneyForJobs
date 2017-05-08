@@ -57,16 +57,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import android.view.ViewGroup.LayoutParams;
 
-public class PlaylistsActivity extends AkazooActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class PlaylistsActivity extends AkazooActivity {
 
-    @InjectView(R.id.playlists_list)
-    ListView mPlaylistsList;
-
-    @InjectView(R.id.pb_loader)
-    ProgressBar mProgressBar;
-
-    PlaylistListAdapter mPlaylistListAdapter;
-    ArrayList<Playlist> playlists = new ArrayList<Playlist>();
 
     private boolean fetchStatus = false;
 
@@ -75,7 +67,11 @@ public class PlaylistsActivity extends AkazooActivity implements LoaderManager.L
         public void onReceive(Context context, Intent intent) {
             super.onReceive(context, intent);
 
-            setUpPlaylistsListAdapter();
+            if(intent.getStringExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE) == Const.REST_PLAYLISTS_SUCCESS){
+                Fragment newFragment = new PlaylistsFragment();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_playlists_container,newFragment).commit();
+            }
 
             if(intent.getAction() == "SERVICE_BIND" && fetchStatus == true){
                 getAkazooController().fetchPlaylists();
@@ -95,36 +91,34 @@ public class PlaylistsActivity extends AkazooActivity implements LoaderManager.L
         setContentView(R.layout.activity_playlists);
         ButterKnife.inject(this);
 
-        if (savedInstanceState == null) {
+        Cursor mCursor;
+
+        String[] mProjection = {
+                DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID,
+                DBTableHelper.COLUMN_PLAYLISTS_NAME,
+                DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT
+        };
+
+        mCursor = getContentResolver().query(
+                PlaylistContentProvider.CONTENT_URI,  // The content URI of the words table - You need to use TracksContentProvider.CONTENT_URI to test yours
+                mProjection,                       // The columns to return for each row
+                null,
+                null,
+                null);
+
+
+        if (mCursor.moveToFirst() == false){
+            Log.d("Cursor", "Cursor is null");
+            fetchStatus = true;
+        }else{
             Fragment newFragment = new PlaylistsFragment();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.add(R.id.fragment_container,newFragment).commit();
+            ft.replace(R.id.fragment_playlists_container,newFragment).commit();
+            Log.d("Cursor", "Cursor is not null");
+            //fetchStatus = false;
         }
 
-        mProgressBar.setVisibility(View.VISIBLE);
-        setUpPlaylistsListAdapter();
 
-        getLoaderManager().initLoader(1, null,this);
-
-    }
-
-    public void setUpPlaylistsListAdapter(){
-
-        mPlaylistListAdapter = new PlaylistListAdapter(PlaylistsActivity.this, playlists);
-        mPlaylistsList.setAdapter(mPlaylistListAdapter);
-        mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intent = new Intent(PlaylistsActivity.this, TracksActivity.class);
-                intent.putExtra(Const.INTENT_SELECTED_PLAYLIST, mPlaylistListAdapter.getItem(position).getPlaylistId());
-                startActivity(intent);
-
-            }
-
-        });
-        mProgressBar.setVisibility(View.INVISIBLE);
 
     }
 
@@ -133,88 +127,6 @@ public class PlaylistsActivity extends AkazooActivity implements LoaderManager.L
         mSnackBar.show();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
 
-        switch (itemId) {
-            case R.id.action_refresh:
-                mPlaylistsList.setAdapter(null);
-                mProgressBar.setVisibility(View.VISIBLE);
-
-                playlists.clear();
-                mPlaylistListAdapter.notifyDataSetChanged();
-                getAkazooController().fetchPlaylists();
-
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-
-        String[] mProjection = {
-                DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID,
-                DBTableHelper.COLUMN_PLAYLISTS_NAME,
-                DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT,
-                DBTableHelper.COLUMN_PLAYLISTS_PHOTO_URL
-        };
-
-        if (id == 1) {
-            return new CursorLoader(PlaylistsActivity.this, PlaylistContentProvider.CONTENT_URI, mProjection, null, null, null);
-        }
-
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor mCursor) {
-
-        if (mCursor != null && mCursor.getCount() > 0) {
-            //mCursor.moveToFirst();
-            while (mCursor.moveToNext()) {
-
-                Playlist playlist = new Playlist();
-
-                String playlistNameRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_PLAYLISTS_NAME));
-
-                int tracksCountRetrievedFromDatabase = mCursor.getInt(mCursor.getColumnIndex(DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT));
-
-                String playlistIdRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID));
-
-                String playlistPhotoUrlRetrievedFromDatabase = mCursor.getString(mCursor.getColumnIndex(DBTableHelper.COLUMN_PLAYLISTS_PHOTO_URL));
-
-                playlist.setName(playlistNameRetrievedFromDatabase);
-
-                playlist.setPlaylistId(playlistIdRetrievedFromDatabase);
-
-                playlist.setItemCount(tracksCountRetrievedFromDatabase);
-
-                playlist.setPhotoUrl(playlistPhotoUrlRetrievedFromDatabase);
-
-                playlists.add(playlist);
-
-            }
-
-        }else {
-            fetchStatus = true;
-        }
-
-        mPlaylistListAdapter.notifyDataSetChanged();
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-        playlists.clear();
-        mPlaylistListAdapter.notifyDataSetChanged();
-    }
 }
