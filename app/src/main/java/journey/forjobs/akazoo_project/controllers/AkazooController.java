@@ -10,10 +10,13 @@ import android.support.v4.content.LocalBroadcastManager;
 import journey.forjobs.akazoo_project.R;
 import journey.forjobs.akazoo_project.database.DBTableHelper;
 import journey.forjobs.akazoo_project.database.PlaylistContentProvider;
+import journey.forjobs.akazoo_project.database.TracksContentProvider;
 import journey.forjobs.akazoo_project.model.Playlist;
+import journey.forjobs.akazoo_project.model.Track;
 import journey.forjobs.akazoo_project.rest.RestCallback;
 import journey.forjobs.akazoo_project.rest.RestClient;
 import journey.forjobs.akazoo_project.rest.pojos.GetPlaylistsResponse;
+import journey.forjobs.akazoo_project.rest.pojos.GetTracksResponse;
 import journey.forjobs.akazoo_project.utils.Const;
 import retrofit2.Call;
 
@@ -65,7 +68,7 @@ public class AkazooController extends Service {
             @Override
             public void handleSuccess(GetPlaylistsResponse response) {
                 super.handleSuccess(response);
-                if ( response.getResult() != null && response.getResult().size() > 0) {
+                if (response.getResult() != null && response.getResult().size() > 0) {
                     getContentResolver().delete(PlaylistContentProvider.CONTENT_URI, null, null);
                     ContentValues values = new ContentValues();
                     for (Playlist pl : response.getResult()) {
@@ -89,8 +92,36 @@ public class AkazooController extends Service {
         });
     }
 
-    //TODO create getTracks as get GetPlaylists
+    public void getTracks(String playlistId) {
+        Call<GetTracksResponse> call = RestClient.call().getTracks(playlistId);
+        call.enqueue(new ControllerRestCallback<GetTracksResponse>() {
+            @Override
+            public void handleSuccess(GetTracksResponse response) {
+                super.handleSuccess(response);
+                if (response.getResult() != null && response.getResult().getItems() != null && response.getResult().getItems().size() > 0) {
+                    getContentResolver().delete(TracksContentProvider.CONTENT_URI, null, null);
+                    ContentValues values = new ContentValues();
+                    for (Track tr : response.getResult().getItems()) {
+                        values.put(DBTableHelper.COLUMN_TRACK_NAME, tr.getTrackName());
+                        values.put(DBTableHelper.COLUMN_TRACK_ARTIST, tr.getArtistName());
+                        values.put(DBTableHelper.COLUMN_TRACK_IMAGE_URL, tr.getImageUrl());
+                        getContentResolver().insert(
+                                TracksContentProvider.CONTENT_URI, values);
+                    }
 
+                    sendSucessfullBroadcastMessage(Const.REST_TRACKS_SUCCESS);
+                } else {
+                    handleFailure(11, getString(R.string.tracks_refresh_failed));
+                }
+            }
+
+            @Override
+            public void handleFailure(int statusCode, String statusMessage) {
+                super.handleFailure(statusCode, statusMessage);
+            }
+        });
+
+    }
 
     //
 

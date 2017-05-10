@@ -22,6 +22,8 @@ public class Const {
 
     public static final String REST_PLAYLISTS_FAIL = "REST_PLAYLISTS_FAIL";
 
+    public static final String SERVICE_BIND = "SERVICE_BIND";
+
     public static final String REST_TRACKS_SUCCESS = "REST_TRACKS_SUCCESS";
 
     public static final String REST_TRACKS_FAIL = "REST_TRACKS_FAIL";

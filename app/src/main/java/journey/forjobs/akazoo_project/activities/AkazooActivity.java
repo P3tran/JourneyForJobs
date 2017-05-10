@@ -10,6 +10,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 
+import journey.forjobs.akazoo_project.application.AkazooApplication;
+import journey.forjobs.akazoo_project.controllers.AkazooController;
 import journey.forjobs.akazoo_project.utils.Const;
 
 
@@ -21,6 +23,11 @@ public abstract class AkazooActivity extends AppCompatActivity {
         //method that will be called when a broadcast message is received
         @Override
         public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Const.CONTROLLER_SUCCESSFULL_CALLBACK)) {
+                message = intent.getStringExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE);
+            } else if (intent.getAction().equals(Const.CONTROLLER_FAILURE_CALLBACK)) {
+                message = "";
+            }
         }
     }
 
@@ -37,6 +44,7 @@ public abstract class AkazooActivity extends AppCompatActivity {
         //Enable activity to listen to broadcast messages
         LocalBroadcastManager.getInstance(this).registerReceiver(getmMessageReceiver(),
                 new IntentFilter(Const.CONTROLLER_SUCCESSFULL_CALLBACK));
+
         LocalBroadcastManager.getInstance(this).registerReceiver(getmMessageReceiver(),
                 new IntentFilter(Const.CONTROLLER_FAILURE_CALLBACK));
     }
@@ -48,5 +56,8 @@ public abstract class AkazooActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(getmMessageReceiver());
     }
 
-
+    protected AkazooController getAkazooController() {
+        AkazooController mController = AkazooApplication.getInstance().getmController();
+        return mController;
+    }
 }

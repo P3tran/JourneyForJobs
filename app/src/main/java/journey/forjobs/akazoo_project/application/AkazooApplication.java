@@ -5,8 +5,10 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.support.v4.content.LocalBroadcastManager;
 
 import journey.forjobs.akazoo_project.controllers.AkazooController;
+import journey.forjobs.akazoo_project.utils.Const;
 
 
 /**
@@ -32,6 +34,9 @@ public class AkazooApplication extends Application {
             mBounded = true;
             mLocalBinder = (AkazooController.LocalBinder) service;
             mController = mLocalBinder.getServerInstance();
+
+            Intent intent = new Intent(Const.SERVICE_BIND);
+            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
         }
     };
 
