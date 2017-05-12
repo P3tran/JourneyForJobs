@@ -138,7 +138,7 @@ public class AkazooController extends Service {
 
         @Override
         public void handleException() {
-            sendFailureBroadcastMessage(Const.REST_SERVICE_DOWN);
+            sendFailureBroadcastMessage(getString(R.string.rest_exception_popup_message));
         }
     }
 

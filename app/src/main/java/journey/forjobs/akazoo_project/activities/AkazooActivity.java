@@ -2,14 +2,17 @@ package journey.forjobs.akazoo_project.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
+import journey.forjobs.akazoo_project.R;
 import journey.forjobs.akazoo_project.application.AkazooApplication;
 import journey.forjobs.akazoo_project.controllers.AkazooController;
 import journey.forjobs.akazoo_project.utils.Const;
@@ -26,7 +29,8 @@ public abstract class AkazooActivity extends AppCompatActivity {
             if (intent.getAction().equals(Const.CONTROLLER_SUCCESSFULL_CALLBACK)) {
                 message = intent.getStringExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE);
             } else if (intent.getAction().equals(Const.CONTROLLER_FAILURE_CALLBACK)) {
-                message = "";
+                message="";
+                showErrorPopup(intent.getStringExtra(Const.CONTROLLER_FAILURE_CALLBACK_MESSAGE));
             }
         }
     }
@@ -59,5 +63,28 @@ public abstract class AkazooActivity extends AppCompatActivity {
     protected AkazooController getAkazooController() {
         AkazooController mController = AkazooApplication.getInstance().getmController();
         return mController;
+    }
+
+    protected void showErrorPopup(String message) {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setMessage(message);
+        alertDialog.setTitle(getString(R.string.popup_error_title));
+        alertDialog.setButton(DialogInterface.BUTTON_NEUTRAL, getString(R.string.giannis), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
+    }
+
+    protected void showCustomDialog(String title, String message, String okButtonLabel, String cancelButtonLabel, DialogInterface.OnClickListener positiveAction, DialogInterface.OnClickListener negativeAction) {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, okButtonLabel, positiveAction);
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, cancelButtonLabel, negativeAction);
+        alertDialog.setTitle(title);
+        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
 }
