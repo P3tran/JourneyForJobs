@@ -39,9 +39,6 @@ public abstract class AkazooActivity extends AppCompatActivity{
                 case Const.CONTROLLER_SUCCESSFULL_CALLBACK:
                     Log.d("REST SUCCESS", intent.getStringExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE));
                     break;
-                case "SERVICE_BIND":
-                    Log.d("SERVICE", "SERVICE_BINDED_SUCCESSFULLY");
-                    break;
             }
         }
     }
@@ -61,8 +58,7 @@ public abstract class AkazooActivity extends AppCompatActivity{
                 new IntentFilter(Const.CONTROLLER_SUCCESSFULL_CALLBACK));
         LocalBroadcastManager.getInstance(this).registerReceiver(getmMessageReceiver(),
                 new IntentFilter(Const.CONTROLLER_FAILURE_CALLBACK));
-        LocalBroadcastManager.getInstance(this).registerReceiver(getmMessageReceiver(),
-                new IntentFilter("SERVICE_BIND"));
+
     }
 
     @Override
@@ -74,9 +70,7 @@ public abstract class AkazooActivity extends AppCompatActivity{
 
     protected AkazooController getAkazooController(){
 
-        AkazooApplication application = (AkazooApplication) getApplicationContext();
-
-        return application.getmController();
+        return AkazooApplication.getmInstance().getmController();
     }
 
 }

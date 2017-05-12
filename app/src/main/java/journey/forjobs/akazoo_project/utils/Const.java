@@ -28,6 +28,8 @@ public class Const {
 
     public static final String REST_SERVICE_DOWN = "REST_SERVICE_DOWN";
 
+    public static final String SERVICE_BIND = "SERVICE_BIND";
+
 
 
 

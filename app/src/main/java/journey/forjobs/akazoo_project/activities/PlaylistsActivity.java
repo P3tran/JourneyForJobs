@@ -6,6 +6,7 @@ import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.content.ServiceConnection;
 import android.database.Cursor;
@@ -73,7 +74,7 @@ public class PlaylistsActivity extends AkazooActivity {
                 ft.replace(R.id.fragment_playlists_container,newFragment).commit();
             }
 
-            if(intent.getAction() == "SERVICE_BIND" && fetchStatus == true){
+            if(intent.getAction() == Const.SERVICE_BIND && fetchStatus == true){
                 getAkazooController().fetchPlaylists();
             }
 
@@ -90,6 +91,9 @@ public class PlaylistsActivity extends AkazooActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlists);
         ButterKnife.inject(this);
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(getmMessageReceiver(),
+                new IntentFilter(Const.SERVICE_BIND));
 
         Cursor mCursor;
 

@@ -26,6 +26,7 @@ public class AkazooApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        mInstance = this;
 
         Intent intent = new Intent(this, AkazooController.class);
         bindService(intent,serviceConnection, BIND_AUTO_CREATE);
@@ -39,8 +40,7 @@ public class AkazooApplication extends Application {
             mController = binder.getServerInstance();
             status = true;
 
-            Intent intent = new Intent("SERVICE_BIND");
-            intent.putExtra("SERVICE_SUCCESSFUL_MESSAGE", "SERVICE_BINDED_SUCCESSFULLY");
+            Intent intent = new Intent(Const.SERVICE_BIND);
             LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
 
         }
