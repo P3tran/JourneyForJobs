@@ -13,4 +13,8 @@
     <string name="generic_rest_error_message">Service is temporary unavailable</string>
     <string name="playlists_error_message">No playlists found</string>
     <string name="tracks_error_message">No tracks found</string>
+    <string name="popup_error_title">Error</string>
+    <string name="popup_error_dismiss_button">OK</string>
+    <string name="rest_exception_callback_message">Oooooops, Something went wrong</string>
+
 </resources>
