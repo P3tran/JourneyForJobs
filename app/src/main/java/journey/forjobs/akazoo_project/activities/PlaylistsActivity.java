@@ -46,6 +46,7 @@ import journey.forjobs.akazoo_project.database.PlaylistContentProvider;
 import journey.forjobs.akazoo_project.database.TracksContentProvider;
 import journey.forjobs.akazoo_project.fragments.PlaylistsFragment;
 import journey.forjobs.akazoo_project.R;
+import journey.forjobs.akazoo_project.fragments.TracksFragment;
 import journey.forjobs.akazoo_project.listAdapters.PlaylistListAdapter;
 import journey.forjobs.akazoo_project.listAdapters.TracksListAdapter;
 import journey.forjobs.akazoo_project.model.Playlist;
@@ -69,9 +70,11 @@ public class PlaylistsActivity extends AkazooActivity {
             super.onReceive(context, intent);
 
             if(intent.getStringExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE) == Const.REST_PLAYLISTS_SUCCESS){
+
                 Fragment newFragment = new PlaylistsFragment();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_playlists_container,newFragment).commit();
+
             }
 
             if(intent.getAction() == Const.SERVICE_BIND && fetchStatus == true){
@@ -91,6 +94,7 @@ public class PlaylistsActivity extends AkazooActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlists);
         ButterKnife.inject(this);
+
 
         LocalBroadcastManager.getInstance(this).registerReceiver(getmMessageReceiver(),
                 new IntentFilter(Const.SERVICE_BIND));
@@ -115,22 +119,14 @@ public class PlaylistsActivity extends AkazooActivity {
             Log.d("Cursor", "Cursor is null");
             fetchStatus = true;
         }else{
+
             Fragment newFragment = new PlaylistsFragment();
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.replace(R.id.fragment_playlists_container,newFragment).commit();
             Log.d("Cursor", "Cursor is not null");
-            //fetchStatus = false;
+
         }
 
-
-
     }
-
-    protected void showSnackbar(String message){
-        Snackbar mSnackBar = Snackbar.make(findViewById(R.id.root), message, Snackbar.LENGTH_LONG);
-        mSnackBar.show();
-    }
-
-
 
 }

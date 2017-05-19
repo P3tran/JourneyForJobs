@@ -21,7 +21,8 @@
 
         <TextView
             android:id="@+id/playlist_name"
-            style="@style/tv_style"/>
+            style="@style/tv_style"
+            android:transitionName="@string/transition_playlist_name"/>
 
         <TextView
             android:id="@+id/playlist_item_count"

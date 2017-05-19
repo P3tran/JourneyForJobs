@@ -1,9 +1,13 @@
 package journey.forjobs.akazoo_project.fragments;
 
+import android.app.ActivityOptions;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,11 +17,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import journey.forjobs.akazoo_project.activities.AkazooActivity;
+import journey.forjobs.akazoo_project.activities.PlaylistsActivity;
 import journey.forjobs.akazoo_project.activities.TracksActivity;
 import journey.forjobs.akazoo_project.application.AkazooApplication;
 import journey.forjobs.akazoo_project.database.DBTableHelper;
@@ -28,16 +35,16 @@ import journey.forjobs.akazoo_project.model.Playlist;
 import journey.forjobs.akazoo_project.utils.Const;
 
 
-public class PlaylistsFragment extends Fragment implements android.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class PlaylistsFragment extends Fragment implements android.app.LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
 
     @InjectView(R.id.playlists_list)
     ListView mPlaylistsList;
 
-    @InjectView(R.id.pb_loader)
-    ProgressBar mProgressBar;
-
     PlaylistListAdapter mPlaylistListAdapter;
     ArrayList<Playlist> playlists = new ArrayList<Playlist>();
+
+    TextView mTextView;
+    String transitionName;
 
     private boolean fetchStatus = false;
 
@@ -47,7 +54,6 @@ public class PlaylistsFragment extends Fragment implements android.app.LoaderMan
         View v = inflater.inflate(R.layout.fragment_playlists, container, false);
         ButterKnife.inject(this, v);
 
-        mProgressBar.setVisibility(View.VISIBLE);
         setUpPlaylistsListAdapter();
 
         getLoaderManager().initLoader(1, null,this);
@@ -62,24 +68,12 @@ public class PlaylistsFragment extends Fragment implements android.app.LoaderMan
 
         mPlaylistListAdapter = new PlaylistListAdapter(getActivity(), playlists);
         mPlaylistsList.setAdapter(mPlaylistListAdapter);
-        mPlaylistsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intent = new Intent(getActivity(), TracksActivity.class);
-                intent.putExtra(Const.INTENT_SELECTED_PLAYLIST, mPlaylistListAdapter.getItem(position).getPlaylistId());
-                startActivity(intent);
-
-            }
-
-        });
-        mProgressBar.setVisibility(View.INVISIBLE);
-
+        mPlaylistsList.setOnItemClickListener(this);
     }
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
 
         String[] mProjection = {
                 DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID,
@@ -144,7 +138,6 @@ public class PlaylistsFragment extends Fragment implements android.app.LoaderMan
 
         switch (itemId) {
             case R.id.action_refresh:
-
                 AkazooApplication ap = (AkazooApplication) getActivity().getApplicationContext();
                 ap.getmController().fetchPlaylists();
 
@@ -158,6 +151,28 @@ public class PlaylistsFragment extends Fragment implements android.app.LoaderMan
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.main, menu);
         super.onCreateOptionsMenu(menu, inflater);
+    }
+
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        AkazooActivity activity = (AkazooActivity) getActivity();
+        AkazooApplication application = (AkazooApplication) activity.getApplication();
+        application.getmController().fetchTracks(mPlaylistListAdapter.getItem(position).getPlaylistId());
+
+        Intent intent = new Intent(getActivity(), TracksActivity.class);
+
+        transitionName = mPlaylistListAdapter.getItem(position).getName();
+        intent.putExtra("name", transitionName);
+
+        mTextView = (TextView) view.findViewById(R.id.playlist_name);
+
+        Pair<View, String> pr = Pair.create((View) mTextView, getString(R.string.transition_playlist_name));
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), pr);
+
+        getActivity().startActivity(intent, options.toBundle());
+
     }
 }
 

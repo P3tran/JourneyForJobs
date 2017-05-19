@@ -83,12 +83,6 @@ public class TracksActivity extends AkazooActivity {
         setContentView(R.layout.activity_tracks);
         ButterKnife.inject(this);
 
-        Intent intent = getIntent();
-        String id = intent.getStringExtra(Const.INTENT_SELECTED_PLAYLIST);
-
-        getAkazooController().fetchTracks(id);
-
-
     }
 
 

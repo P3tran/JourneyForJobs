@@ -1,6 +1,7 @@
 package journey.forjobs.akazoo_project.activities;
 
 import android.app.LoaderManager;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -28,6 +29,7 @@ import journey.forjobs.akazoo_project.utils.Const;
 
 public abstract class AkazooActivity extends AppCompatActivity{
 
+    ProgressDialog progressDialog;
 
     public class MyMessageReceiver extends BroadcastReceiver {
         protected String message;
@@ -39,12 +41,20 @@ public abstract class AkazooActivity extends AppCompatActivity{
             switch (intent.getAction()){
                 case Const.CONTROLLER_FAILURE_CALLBACK:
                     Log.d("REST ERROR", intent.getStringExtra(Const.CONTROLLER_FAILURE_CALLBACK_MESSAGE));
+                    dismissProgressDialog();
                     showPopUp(intent.getStringExtra(Const.CONTROLLER_FAILURE_CALLBACK_MESSAGE));
                     break;
                 case Const.CONTROLLER_SUCCESSFULL_CALLBACK:
                     Log.d("REST SUCCESS", intent.getStringExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE));
+
+                    if (intent.getStringExtra(Const.CONTROLLER_SUCCESSFULL_CALLBACK_MESSAGE) == Const.SHOW_PROGRESS){
+                        showProgressDialog();
+                    }else {
+                        dismissProgressDialog();
+                    }
                     break;
             }
+
         }
     }
 
@@ -53,6 +63,8 @@ public abstract class AkazooActivity extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LocalBroadcastManager.getInstance(this).registerReceiver(getmMessageReceiver(),
+                new IntentFilter(Const.CONTROLLER_SUCCESSFULL_CALLBACK));
 
     }
 
@@ -60,8 +72,7 @@ public abstract class AkazooActivity extends AppCompatActivity{
     protected void onResume() {
         super.onResume();
         //Enable activity to listen to broadcast messages
-        LocalBroadcastManager.getInstance(this).registerReceiver(getmMessageReceiver(),
-                new IntentFilter(Const.CONTROLLER_SUCCESSFULL_CALLBACK));
+
         LocalBroadcastManager.getInstance(this).registerReceiver(getmMessageReceiver(),
                 new IntentFilter(Const.CONTROLLER_FAILURE_CALLBACK));
 
@@ -87,6 +98,19 @@ public abstract class AkazooActivity extends AppCompatActivity{
                 dialog.dismiss();
             }
         }).show();
+
+    }
+
+    public void showProgressDialog(){
+        progressDialog = new ProgressDialog(AkazooActivity.this);
+        progressDialog.setMessage("Loading");
+        progressDialog.show();
+    }
+
+    public void dismissProgressDialog(){
+        if(progressDialog != null){
+            progressDialog.dismiss();
+        }
 
     }
 

@@ -30,6 +30,8 @@ public class Const {
 
     public static final String SERVICE_BIND = "SERVICE_BIND";
 
+    public static final String SHOW_PROGRESS = "SHOW_PROGRESS";
+
 
 
 

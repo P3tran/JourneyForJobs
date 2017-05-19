@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import journey.forjobs.akazoo_project.R;
+import journey.forjobs.akazoo_project.activities.AkazooActivity;
 import journey.forjobs.akazoo_project.database.DBTableHelper;
 import journey.forjobs.akazoo_project.database.PlaylistContentProvider;
 import journey.forjobs.akazoo_project.database.TracksContentProvider;

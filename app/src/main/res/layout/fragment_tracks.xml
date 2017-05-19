@@ -4,19 +4,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_playlist"
+        android:transitionName="@string/transition_playlist_name"/>
+
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/tracks_list">
 
     </ListView>
-
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/pb_loader"
-        android:visibility="invisible"
-        android:layout_gravity="center"/>
 
 
 </LinearLayout>

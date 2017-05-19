@@ -1,6 +1,8 @@
 package journey.forjobs.akazoo_project.fragments;
 
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -9,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
@@ -19,6 +23,7 @@ import journey.forjobs.akazoo_project.database.TracksContentProvider;
 import journey.forjobs.akazoo_project.R;
 import journey.forjobs.akazoo_project.listAdapters.TracksListAdapter;
 import journey.forjobs.akazoo_project.model.Track;
+import journey.forjobs.akazoo_project.utils.Const;
 
 
 public class TracksFragment extends Fragment implements android.app.LoaderManager.LoaderCallbacks<Cursor>{
@@ -26,8 +31,8 @@ public class TracksFragment extends Fragment implements android.app.LoaderManage
     @InjectView(R.id.tracks_list)
     ListView mTracksList;
 
-    @InjectView(R.id.pb_loader)
-    ProgressBar mProgressBar;
+    @InjectView(R.id.tv_playlist)
+    TextView mTextView;
 
     TracksListAdapter mTracksListAdapter;
     ArrayList<Track> tracks = new ArrayList<Track>();
@@ -40,7 +45,10 @@ public class TracksFragment extends Fragment implements android.app.LoaderManage
         View v = inflater.inflate(R.layout.fragment_tracks, container, false);
         ButterKnife.inject(this, v);
 
-        mProgressBar.setVisibility(View.VISIBLE);
+
+        Intent intent = getActivity().getIntent();
+        mTextView.setText(intent.getStringExtra("name"));
+
         setupTracksListAdapter();
 
         getLoaderManager().initLoader(0,null,this);
@@ -51,6 +59,7 @@ public class TracksFragment extends Fragment implements android.app.LoaderManage
 
     @Override
     public android.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+
 
         String[] mProjection = {
                 DBTableHelper.COLUMN_TRACKS_TRACK_ID,
