@@ -6,8 +6,11 @@
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="75dp"
         android:id="@+id/tv_playlist"
+        android:background="@color/light_blue"
+        android:textSize="30dp"
+        android:gravity="center"
         android:transitionName="@string/transition_playlist_name"/>
 
     <ListView
@@ -16,6 +19,5 @@
         android:id="@+id/tracks_list">
 
     </ListView>
-
 
 </LinearLayout>
