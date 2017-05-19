@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Loader;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -61,8 +62,8 @@ import android.view.ViewGroup.LayoutParams;
 
 public class PlaylistsActivity extends AkazooActivity {
 
-
     private boolean fetchStatus = false;
+    SharedPreferences prefs = null;
 
     private MyMessageReceiver mMessageReceiver = new MyMessageReceiver() {
         @Override
@@ -99,34 +100,22 @@ public class PlaylistsActivity extends AkazooActivity {
         LocalBroadcastManager.getInstance(this).registerReceiver(getmMessageReceiver(),
                 new IntentFilter(Const.SERVICE_BIND));
 
-        Cursor mCursor;
+        prefs = getSharedPreferences("journey.forjobs.akazoo_project", MODE_PRIVATE);
 
-        String[] mProjection = {
-                DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID,
-                DBTableHelper.COLUMN_PLAYLISTS_NAME,
-                DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT
-        };
-
-        mCursor = getContentResolver().query(
-                PlaylistContentProvider.CONTENT_URI,  // The content URI of the words table - You need to use TracksContentProvider.CONTENT_URI to test yours
-                mProjection,                       // The columns to return for each row
-                null,
-                null,
-                null);
-
-
-        if (mCursor.moveToFirst() == false){
-            Log.d("Cursor", "Cursor is null");
-            fetchStatus = true;
-        }else{
-
-            Fragment newFragment = new PlaylistsFragment();
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.fragment_playlists_container,newFragment).commit();
-            Log.d("Cursor", "Cursor is not null");
-
-        }
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (prefs.getBoolean("firstrun", true)) {
+            fetchStatus = true;
+            prefs.edit().putBoolean("firstrun", false).commit();
+        }else {
+            Fragment newFragment = new PlaylistsFragment();
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.fragment_playlists_container,newFragment).commit();
+        }
+    }
 }
