@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.util.Pair;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,10 +36,13 @@ import journey.forjobs.akazoo_project.model.Playlist;
 import journey.forjobs.akazoo_project.utils.Const;
 
 
-public class PlaylistsFragment extends Fragment implements android.app.LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener {
+public class PlaylistsFragment extends Fragment implements android.app.LoaderManager.LoaderCallbacks<Cursor>, AdapterView.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     @InjectView(R.id.playlists_list)
     ListView mPlaylistsList;
+
+    @InjectView(R.id.swipe_container)
+    SwipeRefreshLayout mSwipeContainer;
 
     PlaylistListAdapter mPlaylistListAdapter;
     ArrayList<Playlist> playlists = new ArrayList<Playlist>();
@@ -47,6 +51,7 @@ public class PlaylistsFragment extends Fragment implements android.app.LoaderMan
     String transitionName;
 
     private boolean fetchStatus = false;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,6 +64,10 @@ public class PlaylistsFragment extends Fragment implements android.app.LoaderMan
         getLoaderManager().initLoader(1, null,this);
 
         setHasOptionsMenu(true);
+
+        mSwipeContainer.setOnRefreshListener(this);
+        //mSwipeContainer.setRefreshing(true);
+
 
         return v;
     }
@@ -138,8 +147,8 @@ public class PlaylistsFragment extends Fragment implements android.app.LoaderMan
 
         switch (itemId) {
             case R.id.action_refresh:
-                AkazooApplication ap = (AkazooApplication) getActivity().getApplicationContext();
-                ap.getmController().fetchPlaylists();
+//                AkazooApplication ap = (AkazooApplication) getActivity().getApplicationContext();
+//                ap.getmController().fetchPlaylists();
 
                 return true;
         }
@@ -173,6 +182,12 @@ public class PlaylistsFragment extends Fragment implements android.app.LoaderMan
 
         getActivity().startActivity(intent, options.toBundle());
 
+    }
+
+    @Override
+    public void onRefresh() {
+        AkazooApplication ap = (AkazooApplication) getActivity().getApplicationContext();
+        ap.getmController().fetchPlaylists();
     }
 }
 

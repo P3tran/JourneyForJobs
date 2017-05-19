@@ -7,10 +7,10 @@
     android:orientation="vertical"
     tools:context=".activities.PlaylistsActivity">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/fragment_playlists_container">
-    </FrameLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/fragment_playlists_container">
+        </FrameLayout>
 
 </android.support.design.widget.CoordinatorLayout>
