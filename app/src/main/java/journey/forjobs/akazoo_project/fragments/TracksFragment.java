@@ -9,9 +9,12 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -34,6 +37,9 @@ public class TracksFragment extends Fragment implements android.app.LoaderManage
     @InjectView(R.id.tv_playlist)
     TextView mTextView;
 
+    @InjectView(R.id.im_playlist_image)
+    ImageView imageView;
+
     TracksListAdapter mTracksListAdapter;
     ArrayList<Track> tracks = new ArrayList<Track>();
 
@@ -48,6 +54,9 @@ public class TracksFragment extends Fragment implements android.app.LoaderManage
 
         Intent intent = getActivity().getIntent();
         mTextView.setText(intent.getStringExtra("name"));
+
+        Picasso.with(getActivity().getApplicationContext()).load(intent.getStringExtra("photoUrl")).into(imageView);
+
 
         setupTracksListAdapter();
 

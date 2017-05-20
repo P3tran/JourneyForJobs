@@ -4,14 +4,34 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:id="@+id/tv_playlist"
-        android:background="@color/light_blue"
-        android:textSize="30dp"
-        android:gravity="center"
-        android:transitionName="@string/transition_playlist_name"/>
+        android:layout_height="100dp"
+        android:background="@color/light_blue">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:padding="14dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/ic_launcher"
+            android:id="@+id/im_playlist_image"
+            android:transitionName="@string/transition_playlist_image"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/tv_playlist"
+            android:textSize="29dp"
+            android:padding="14dp"
+            android:layout_gravity="center"
+            android:transitionName="@string/transition_playlist_name"/>
+
+    </LinearLayout>
+
+
+
 
     <ListView
         android:layout_width="match_parent"

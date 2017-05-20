@@ -16,5 +16,6 @@
     <string name="popup_error_title">Error</string>
     <string name="popup_error_dismiss_button">OK</string>
     <string name="rest_exception_callback_message">Oooooops, Something went wrong</string>
+    <string name="transition_playlist_image">transition_playlist_image</string>
 
 </resources>

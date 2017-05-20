@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -49,6 +50,9 @@ public class PlaylistsFragment extends Fragment implements android.app.LoaderMan
 
     TextView mTextView;
     String transitionName;
+
+    ImageView mImageView;
+    String transitionImage;
 
     private boolean fetchStatus = false;
 
@@ -151,10 +155,16 @@ public class PlaylistsFragment extends Fragment implements android.app.LoaderMan
         transitionName = mPlaylistListAdapter.getItem(position).getName();
         intent.putExtra("name", transitionName);
 
-        mTextView = (TextView) view.findViewById(R.id.playlist_name);
+        transitionImage = mPlaylistListAdapter.getItem(position).getPhotoUrl();
+        intent.putExtra("photoUrl", transitionImage);
 
-        Pair<View, String> pr = Pair.create((View) mTextView, getString(R.string.transition_playlist_name));
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), pr);
+        mTextView = (TextView) view.findViewById(R.id.playlist_name);
+        mImageView = (ImageView) view.findViewById(R.id.iv_image_view);
+
+        Pair<View, String> pr1 = Pair.create((View) mTextView, getString(R.string.transition_playlist_name));
+        Pair<View, String> pr2 = Pair.create((View) mImageView, getString(R.string.transition_playlist_image));
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), pr1, pr2);
 
         getActivity().startActivity(intent, options.toBundle());
 

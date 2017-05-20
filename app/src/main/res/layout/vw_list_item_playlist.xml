@@ -11,7 +11,8 @@
         android:id="@+id/iv_image_view"
         android:src="@mipmap/ic_launcher"
         android:minHeight="75dp"
-        android:minWidth="75dp"/>
+        android:minWidth="75dp"
+        android:transitionName="@string/transition_playlist_image"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
