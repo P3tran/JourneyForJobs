@@ -79,7 +79,7 @@ public class PlaylistsActivity extends AkazooActivity {
             }
 
             if(intent.getAction() == Const.SERVICE_BIND && fetchStatus == true){
-                getAkazooController().fetchPlaylists();
+                getAkazooController().fetchPlaylists(true);
             }
 
         }

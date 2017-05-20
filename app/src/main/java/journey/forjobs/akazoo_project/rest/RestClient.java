@@ -37,8 +37,15 @@ public class RestClient {
         setupRestClient();
     }
 
-    public static RestAPI call() {
+    public static RestAPI call(Boolean showMessage) {
 
+        if (showMessage){
+            sendSuccessfulBroadcastMessage(Const.SHOW_PROGRESS);
+        }
+        return REST_API;
+    }
+
+    public static RestAPI call() {
         sendSuccessfulBroadcastMessage(Const.SHOW_PROGRESS);
         return REST_API;
     }

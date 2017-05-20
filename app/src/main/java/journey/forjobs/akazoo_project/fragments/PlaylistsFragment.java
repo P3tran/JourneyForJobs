@@ -66,8 +66,6 @@ public class PlaylistsFragment extends Fragment implements android.app.LoaderMan
         setHasOptionsMenu(true);
 
         mSwipeContainer.setOnRefreshListener(this);
-        //mSwipeContainer.setRefreshing(true);
-
 
         return v;
     }
@@ -142,28 +140,6 @@ public class PlaylistsFragment extends Fragment implements android.app.LoaderMan
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-
-        switch (itemId) {
-            case R.id.action_refresh:
-//                AkazooApplication ap = (AkazooApplication) getActivity().getApplicationContext();
-//                ap.getmController().fetchPlaylists();
-
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.main, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-
-    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         AkazooActivity activity = (AkazooActivity) getActivity();
@@ -187,7 +163,7 @@ public class PlaylistsFragment extends Fragment implements android.app.LoaderMan
     @Override
     public void onRefresh() {
         AkazooApplication ap = (AkazooApplication) getActivity().getApplicationContext();
-        ap.getmController().fetchPlaylists();
+        ap.getmController().fetchPlaylists(false);
     }
 }
 
