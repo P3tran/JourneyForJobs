@@ -70,39 +70,6 @@ public class AkazooController extends Service {
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
     }
 
-    public void fetchPlaylists(){
-        Call<GetPlaylistsResponse> call = RestClient.call().getPlaylist();
-
-        call.enqueue(new ControllerRestCallback<GetPlaylistsResponse>() {
-
-            @Override
-            public void handleFailure(int statusCode, String statusMessage) {
-                super.handleFailure(statusCode, statusMessage);
-            }
-
-            @Override
-            public void handleSuccess(GetPlaylistsResponse response) {
-                super.handleSuccess(response);
-
-                if(response.getResult() != null && response.getResult().size() > 0){
-                    getContentResolver().delete(PlaylistContentProvider.CONTENT_URI, null, null);
-                    final ArrayList<Playlist> playlists = response.getResult();
-                    for (Playlist playlist: playlists){
-                        ContentValues values = new ContentValues();
-                        values.put(DBTableHelper.COLUMN_PLAYLISTS_PLAYLIST_ID, playlist.getPlaylistId());
-                        values.put(DBTableHelper.COLUMN_PLAYLISTS_NAME, playlist.getName());
-                        values.put(DBTableHelper.COLUMN_PLAYLISTS_TRACK_COUNT, playlist.getItemCount());
-                        values.put(DBTableHelper.COLUMN_PLAYLISTS_PHOTO_URL, playlist.getPhotoUrl());
-                        getContentResolver().insert(PlaylistContentProvider.CONTENT_URI, values);
-                    }
-                    sendSuccessfulBroadcastMessage(Const.REST_PLAYLISTS_SUCCESS);
-                }else {
-                    handleFailure(10, getString(R.string.playlists_error_message));
-                }
-            }
-        });
-    }
-
     public void fetchPlaylists(Boolean showProgress){
         Call<GetPlaylistsResponse> call = RestClient.call(showProgress).getPlaylist();
 
